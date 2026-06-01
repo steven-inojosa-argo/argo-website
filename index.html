@@ -355,7 +355,7 @@ footer {
 }
 
 /* Sticky condensed headline — sits just below the nav */
-.hero-sticky {
+.sticky-bar {
   position: fixed;
   top: 81px; /* nav height */
   left: 0;
@@ -379,7 +379,7 @@ footer {
   border-bottom: 1px solid rgba(61,184,206,0.12);
 }
 
-.hero-sticky.visible {
+.sticky-bar.visible {
   opacity: 1;
 }
 
@@ -1809,7 +1809,7 @@ a.proof-logo:hover {
   .nav-cta { padding: 8px 12px; font-size: 9px; letter-spacing: 0.03em; }
 
   main { padding-top: 52px; }
-  .hero-sticky { top: 52px; }
+  .sticky-bar { top: 52px; }
 
   /* HERO — headline font-size is JS-driven, so it is left to the script */
   .hero { padding: 4.5rem 1.25rem 3rem; min-height: auto; }
@@ -2618,19 +2618,23 @@ const heroBot   = document.getElementById('heroBottom');
 const scrollInd = document.getElementById('scrollIndicator');
 const stickyBar = document.getElementById('stickyBar');
 
-const SMALL_SIZE  = 11;
-const TARGET_TOP  = 81 + 14;
-const TARGET_LEFT = 4 * 16;
+const SMALL_SIZE = 11;
 
 // These update on every resize
-let BIG_SIZE, originTop, originLeft, originWidth;
+let BIG_SIZE, targetTop, targetLeft, originTop, originLeft, originWidth;
 
 function lerp(a, b, t) { return a + (b - a) * t; }
 function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
 
 function measure() {
-  // Recalculate font size based on current viewport
-  BIG_SIZE = Math.min(window.innerWidth * 0.068, 110);
+  // Compute target position from actual nav height so it's correct on mobile too
+  const nav = document.querySelector('nav');
+  const navH = nav ? nav.getBoundingClientRect().height : 81;
+  targetTop  = navH + 14;
+  targetLeft = window.innerWidth < 768 ? 20 : 64;
+
+  // Recalculate font size — clamp to a readable minimum on mobile
+  BIG_SIZE = Math.max(window.innerWidth < 768 ? 48 : 0, Math.min(window.innerWidth * 0.068, 110));
   hl.style.fontSize = BIG_SIZE + 'px';
 
   // Unfix to measure natural position
@@ -2664,8 +2668,8 @@ function onScroll() {
 
   // Position
   const fromTop = originTop - scrollY;
-  hl.style.top  = lerp(fromTop, TARGET_TOP, p) + 'px';
-  hl.style.left = lerp(originLeft, TARGET_LEFT, p) + 'px';
+  hl.style.top  = lerp(fromTop, targetTop, p) + 'px';
+  hl.style.left = lerp(originLeft, targetLeft, p) + 'px';
 
   // Scale
   const scale = lerp(1, SMALL_SIZE / BIG_SIZE, p);
