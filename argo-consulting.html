@@ -73,8 +73,11 @@ nav {
   text-transform: uppercase;
   color: var(--teal-400);
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
-
+.nav-logo img { height: 28px; width: auto; }
 .nav-logo span { color: var(--yellow-500); }
 
 .nav-links {
@@ -1423,7 +1426,7 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">Argo <span>Analytics</span></a>
+  <a href="index.html" class="nav-logo"><img src="assets/argo.png" alt="Argo logo">Argo <span>Analytics</span></a>
   <ul class="nav-links">
     <li><a href="argo-about.html">About</a></li>
     <li><a href="argo-consulting.html" class="active">Consulting</a></li>
