@@ -89,6 +89,28 @@ nav {
   background: rgba(6,13,16,0.7);
   backdrop-filter: blur(12px);
 }
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 101;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--neutral-100);
+  margin: 5px 0;
+  transition: 0.3s;
+}
+
+.nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(10px, 10px); }
+.nav-toggle.active span:nth-child(2) { opacity: 0; }
+.nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
 .nav-logo {
   font-family: var(--font-mono);
   font-size: 13px;
@@ -108,6 +130,30 @@ nav {
   align-items: center;
   gap: 3rem;
   list-style: none;
+}
+
+.nav-links.open {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  gap: 0;
+  background: rgba(6,13,16,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+  padding: 1rem 0;
+  margin-top: 0;
+}
+
+.nav-links.open li {
+  width: 100%;
+}
+
+.nav-links.open a {
+  display: block;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(61,184,206,0.05);
 }
 .nav-links a {
   font-family: var(--font-mono);
@@ -953,14 +999,16 @@ footer {
 
 /* ── MOBILE (≤768px) ──────────────────────────────────────── */
 @media (max-width: 768px) {
-  /* NAV — stays a single row; logo word drops, links compact */
-  nav { padding: 0.85rem 1.1rem; }
-  .nav-logo { font-size: 10px; }
-  .nav-logo img { height: 20px; }
+  /* NAV — hamburger menu for mobile */
+  nav { padding: 1rem 1.25rem; flex-wrap: wrap; }
+  .nav-logo { font-size: 11px; }
+  .nav-logo img { height: 24px; }
   .nav-logo span { display: none; }
-  .nav-links { gap: 0.85rem; }
+  .nav-toggle { display: block; }
+  .nav-links { position: static; flex-direction: row; gap: 0.85rem; background: none; border: none; padding: 0; }
+  .nav-links.open { position: absolute; }
   .nav-links a { font-size: 9px; letter-spacing: 0.05em; }
-  .nav-cta { padding: 6px 10px; font-size: 9px; letter-spacing: 0.03em; }
+  .nav-cta { padding: 8px 12px; font-size: 9px; letter-spacing: 0.03em; }
 
   main { padding-top: 52px; }
 
@@ -1021,7 +1069,12 @@ footer {
 
 <nav>
   <a href="index.html" class="nav-logo"><img src="assets/argo.png" alt="Argo logo">Argo <span>Analytics</span></a>
-  <ul class="nav-links">
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
     <li><a href="argo-about.html" class="active">About</a></li>
     <li><a href="argo-consulting.html">Consulting</a></li>
     <li><a href="argo-schedule.html" class="nav-cta">Schedule a Call</a></li>
@@ -1597,6 +1650,33 @@ const statObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.3 });
 
 if (statBand) statObserver.observe(statBand);
+
+// ── MOBILE HAMBURGER MENU ────────────────────────────────────────────────────
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+
+if (navToggle) {
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('active');
+    navLinks.classList.toggle('open');
+  });
+
+  // Close menu when a link is clicked
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navToggle.classList.remove('active');
+      navLinks.classList.remove('open');
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('nav')) {
+      navToggle.classList.remove('active');
+      navLinks.classList.remove('open');
+    }
+  });
+}
 </script>
 </body>
 </html>
