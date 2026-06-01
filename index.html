@@ -449,6 +449,13 @@ footer {
   letter-spacing: 0.08em;
   color: var(--neutral-300);
   opacity: 0.7;
+  text-decoration: none;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+a.proof-logo:hover {
+  opacity: 1;
+  color: var(--teal-400);
 }
 
 .proof-divider {
@@ -1732,11 +1739,17 @@ footer {
     <div class="hero-proof">
       <span class="proof-label">Trusted by</span>
       <div class="proof-logos">
-        <span class="proof-logo">Malwarebytes</span>
+        <a class="proof-logo" href="https://www.f5.com" target="_blank" rel="noopener">F5</a>
         <span class="proof-divider">·</span>
-        <span class="proof-logo">Freddy's Frozen Custard</span>
+        <a class="proof-logo" href="https://www.goodwill.org" target="_blank" rel="noopener">Goodwill</a>
         <span class="proof-divider">·</span>
-        <span class="proof-logo">The SmartCycle Group</span>
+        <a class="proof-logo" href="https://www.mistercarwash.com" target="_blank" rel="noopener">Mister Car Wash</a>
+        <span class="proof-divider">·</span>
+        <a class="proof-logo" href="https://www.zayo.com" target="_blank" rel="noopener">Zayo</a>
+        <span class="proof-divider">·</span>
+        <a class="proof-logo" href="https://www.generalrv.com" target="_blank" rel="noopener">General RV Center</a>
+        <span class="proof-divider">·</span>
+        <a class="proof-logo" href="https://www.franklincovey.com" target="_blank" rel="noopener">FranklinCovey</a>
       </div>
       <span class="proof-quote">"It's like magic." — Franco A., Malwarebytes</span>
     </div>
