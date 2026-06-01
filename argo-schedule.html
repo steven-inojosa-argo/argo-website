@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Argo Analytics — Schedule a Call</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<!-- Calendly widget CSS -->
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -277,13 +275,12 @@ main {
   border: 1px solid rgba(61,184,206,0.25);
   overflow: hidden;
   flex-shrink: 0;
-  background: linear-gradient(135deg, var(--teal-900), rgba(61,184,206,0.1));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 18px;
-  color: var(--teal-400);
+}
+.host-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .host-info {}
@@ -339,7 +336,7 @@ main {
   background: rgba(8,16,20,0.6);
   border: 1px solid rgba(61,184,206,0.12);
   border-radius: 4px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow:
     0 0 0 1px rgba(61,184,206,0.04),
     0 40px 80px rgba(0,0,0,0.5),
@@ -355,15 +352,44 @@ main {
   background: linear-gradient(to right, transparent, rgba(61,184,206,0.4), transparent);
 }
 
-/* Header bar above calendly */
+/* Header bar above calendar */
 .cal-header {
-  padding: 1rem 2rem;
-  background: rgba(0,14,18,0.8);
-  border-bottom: 1px solid rgba(61,184,206,0.08);
+  padding: 1.25rem 2rem;
+  background: rgba(0,14,18,0.9);
+  border-bottom: 1px solid rgba(61,184,206,0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+.cal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.cal-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid rgba(61,184,206,0.25);
+}
+.cal-header-name {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-100);
+  letter-spacing: 0.01em;
+}
+.cal-header-role {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+  margin-top: 2px;
+}
+.cal-header-right {}
 .cal-header-label {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -387,18 +413,20 @@ main {
   50% { opacity: 0.7; box-shadow: 0 0 12px rgba(40,200,64,0.4); }
 }
 
-.cal-header-meta {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  color: var(--neutral-400);
+/* Crop the Google Calendar's own header out of view */
+.cal-iframe-crop {
+  overflow: hidden;
+  height: 900px;
+  border-radius: 0 0 4px 4px;
+  filter: invert(1) hue-rotate(180deg);
+  isolation: isolate;
 }
-
-/* Override Calendly embed background */
-.calendly-inline-widget {
-  min-width: 320px;
-  height: 700px;
-  background: transparent !important;
+.cal-iframe-crop iframe {
+  display: block;
+  width: 100%;
+  height: 1280px;
+  border: 0;
+  margin-top: -330px;
 }
 
 /* ── OR DIVIDER ───────────────────────────────────────────────────────────── */
@@ -661,7 +689,7 @@ footer {
   <!-- HOST CARD -->
   <div class="host-intro">
     <div class="host-card">
-      <div class="host-avatar">AC</div>
+      <div class="host-avatar"><img src="assets/andrew.png" alt="Andrew Chaffin"></div>
       <div class="host-info">
         <div class="host-name">Andrew Chaffin</div>
         <div class="host-role">Co-Founder · Argo Analytics</div>
@@ -688,12 +716,13 @@ footer {
           <div class="cal-status-dot"></div>
           Live availability
         </div>
-        <div class="cal-header-meta">Andrew Chaffin · Argo Analytics</div>
       </div>
-      <!-- Calendly inline widget -->
-      <div class="calendly-inline-widget"
-           data-url="https://calendly.com/andrew-argoanalytics/30min?hide_gdpr_banner=1&background_color=060D10&text_color=F5F5F5&primary_color=0091AD"
-           style="min-width:320px;height:700px;">
+      <!-- Google Calendar — iframe cropped to hide its own header -->
+      <div class="cal-iframe-crop">
+        <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ102sXqA8bODsJZuPxJjl1rlFhT0E3_WJfrd3uzwJAHJnsbCXeIeptO7N06sy5NAEsvB0I_FMN9?gv=true"
+                frameborder="0"
+                allowfullscreen>
+        </iframe>
       </div>
     </div>
   </section>
@@ -781,8 +810,6 @@ footer {
   <span class="footer-contact">interest@argoanalytics.ai · (208) 313-5165</span>
 </div>
 
-<!-- Calendly widget JS -->
-<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
 <script>
 // ── STARS + CURSOR CONSTELLATION ─────────────────────────────────────────────
