@@ -2936,15 +2936,12 @@ document.fonts.ready.then(() => {
 // ── TRUST SECTION: mock player controls (panelBrowser lives in painRightInner) ──
 
 const ytVideos = [
-  { title: 'Full Lineage Mapper',     duration: '12:47' },
-  { title: 'Lineage Visualizer',       duration: '9:14'  },
-  { title: 'MajorDomo as a Service',   duration: '18:32' },
+  { title: 'Full Lineage Mapper',   duration: '12:47', videoId: 'qj00eJor2Ys' },
+  { title: 'Lineage Visualizer',    duration: '9:14',  videoId: 'wdggTz8dUlI' },
+  { title: 'MajorDomo as a Service',duration: '18:32', videoId: 'XIE7hvwJitQ' },
 ];
 
 let ytCurrentThumb = 0;
-let ytPlaying = false;
-let ytProgressInterval = null;
-let ytProgressPct = 0;
 
 function ytSelectThumb(idx) {
   ytCurrentThumb = idx;
@@ -2952,38 +2949,23 @@ function ytSelectThumb(idx) {
   const v = ytVideos[idx];
   document.getElementById('ytVideoTitle').textContent = v.title;
   document.getElementById('ytTimeDisplay').textContent = '0:00 / ' + v.duration;
-  ytStopProgress();
-  ytProgressPct = 0;
-  document.getElementById('ytProgressBar').style.width = '0%';
-  ytSetPlaying(false);
+  const existing = document.getElementById('ytRealPlayer');
+  if (existing) {
+    existing.src = 'https://www.youtube.com/embed/' + v.videoId + '?autoplay=1&rel=0&modestbranding=1';
+  }
 }
 
-function ytMockPlay() { ytSetPlaying(!ytPlaying); }
-
-function ytSetPlaying(state) {
-  ytPlaying = state;
-  document.getElementById('ytPlayBtn').style.display    = state ? 'none' : 'flex';
-  document.getElementById('ytPlayingOverlay').style.display = state ? 'flex' : 'none';
-  state ? ytStartProgress() : ytStopProgress();
-}
-
-function ytStartProgress() {
-  ytStopProgress();
+function ytMockPlay() {
   const v = ytVideos[ytCurrentThumb];
-  const parts = v.duration.split(':');
-  const totalSec = parseInt(parts[0]) * 60 + parseInt(parts[1]);
-  ytProgressInterval = setInterval(() => {
-    ytProgressPct = Math.min(ytProgressPct + (100 / totalSec / 10), 100);
-    document.getElementById('ytProgressBar').style.width = ytProgressPct + '%';
-    const elapsed = Math.floor(ytProgressPct / 100 * totalSec);
-    const m = Math.floor(elapsed / 60), s = elapsed % 60;
-    document.getElementById('ytTimeDisplay').textContent = m + ':' + String(s).padStart(2,'0') + ' / ' + v.duration;
-    if (ytProgressPct >= 100) { ytStopProgress(); ytSetPlaying(false); }
-  }, 100);
-}
-
-function ytStopProgress() {
-  if (ytProgressInterval) { clearInterval(ytProgressInterval); ytProgressInterval = null; }
+  const thumb = document.getElementById('ytMockThumb');
+  const iframe = document.createElement('iframe');
+  iframe.id = 'ytRealPlayer';
+  iframe.src = 'https://www.youtube.com/embed/' + v.videoId + '?autoplay=1&rel=0&modestbranding=1';
+  iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+  iframe.allowFullscreen = true;
+  iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;z-index:10;border-radius:inherit;';
+  thumb.appendChild(iframe);
+  document.getElementById('ytPlayBtn').style.display = 'none';
 }
 
 // Global click handler stub (kept for safety)
