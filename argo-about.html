@@ -454,6 +454,13 @@ main {
   flex-shrink: 0;
   position: relative;
 }
+.founder-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
 .founder-avatar-inner {
   width: 100%;
   height: 100%;
@@ -1032,10 +1039,7 @@ footer {
       <div class="founder-card reveal">
         <div class="founder-top">
           <div class="founder-avatar">
-            <div class="photo-ph">
-              <div class="photo-ph-initials">AC</div>
-              <div class="photo-ph-label">Photo here</div>
-            </div>
+            <img src="assets/andrew.png" alt="Andrew Chaffin">
           </div>
           <div class="founder-meta">
             <div class="founder-role">Co-Founder</div>
@@ -1064,10 +1068,7 @@ footer {
       <div class="founder-card reveal reveal-delay-1">
         <div class="founder-top">
           <div class="founder-avatar">
-            <div class="photo-ph">
-              <div class="photo-ph-initials">JS</div>
-              <div class="photo-ph-label">Photo here</div>
-            </div>
+            <img src="assets/john.png" alt="John Stevens">
           </div>
           <div class="founder-meta">
             <div class="founder-role">Co-Founder</div>
@@ -1092,7 +1093,6 @@ footer {
       </div>
 
     </div>
-    <p class="photo-placeholder-note">[ drop in headshots when ready — drop-zone coming ]</p>
   </section>
 
   <!-- ORIGIN / HISTORY -->
