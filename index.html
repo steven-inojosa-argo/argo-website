@@ -1692,6 +1692,105 @@ a.proof-logo:hover {
   background: rgba(220,0,0,1) !important;
 }
 
+/* ============================================================
+   RESPONSIVE — small screens only. The desktop layout above is
+   left completely untouched; everything here lives inside
+   max-width media queries (tablet ≤1024px, mobile ≤768px).
+   ============================================================ */
+
+/* ── TABLET (≤1024px) ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  nav { padding: 1.5rem 2rem; }
+  .nav-links { gap: 1.5rem; }
+
+  footer { padding: 3rem 2rem; gap: 2.5rem; }
+  .footer-bottom { padding: 1.5rem 2rem; }
+
+  .hero { padding: 5.5rem 2rem 4rem; }
+  .hero-sub-row { gap: 2rem; }
+
+  .bridge { padding: 7rem 2rem 5rem; }
+
+  /* ── SCROLLYTELLING → single column (tablet & down) ──────────
+     The two-column "scrolling copy + sticky mock UI" layout is too
+     cramped below desktop, so it collapses to one column here.
+     `!important` beats the inline min-height:900vh / padding. */
+  .pain-section,
+  .services-section { grid-template-columns: 1fr !important; min-height: auto !important; }
+  .trust-section { min-height: auto !important; }
+  .trust-left { width: 100% !important; }
+  .pain-left, .services-left { padding: 0 2rem; }
+
+  /* the sticky desktop visual panels are decorative mock UIs that depend on
+     the scroll choreography — hide them and present the narrative cleanly */
+  .pain-right, .services-right, .trust-right { display: none !important; }
+
+  /* collapse the tall scroll spacers used to pace the desktop animation */
+  .pain-spacer-top, .pain-spacer-bottom,
+  .services-spacer-bottom, .trust-spacer-bottom { height: 0 !important; }
+
+  /* force narrative blocks fully visible (override scroll-driven dimming) */
+  .pain-item, .service-item, .trust-item, .cta-item {
+    opacity: 1 !important;
+    transform: none !important;
+    min-height: auto !important;
+    padding: 3rem 0 !important;
+  }
+  .pain-heading, .pain-body, .service-body, .trust-item-body, .cta-item-body,
+  .services-intro-body, .trust-intro-body, .cta-intro-body { max-width: none; }
+
+  .services-intro { padding: 3.5rem 0 2.5rem !important; }
+  .trust-intro, .cta-section-intro { padding: 3.5rem 0 2.5rem; }
+  .services-cta-section { padding: 6rem 2rem; }
+  .trust-ctas, .cta-final-row { flex-wrap: wrap; gap: 1rem; }
+
+  /* mock shells (if shown anywhere) never exceed the viewport */
+  .dash-shell, .search-shell, .browser-shell,
+  .pain-right-inner, .trust-right-inner { max-width: 100%; }
+}
+
+/* ── MOBILE (≤768px) ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV — stays a single row; logo word "Analytics" drops, links compact */
+  nav { padding: 0.85rem 1.1rem; }
+  .nav-logo { font-size: 10px; }
+  .nav-logo img { height: 20px; }
+  .nav-logo span { display: none; }
+  .nav-links { gap: 0.85rem; }
+  .nav-links a { font-size: 9px; letter-spacing: 0.05em; }
+  .nav-cta { padding: 6px 10px; font-size: 9px; letter-spacing: 0.03em; }
+
+  main { padding-top: 52px; }
+  .hero-sticky { top: 52px; }
+
+  /* HERO — headline font-size is JS-driven, so it is left to the script */
+  .hero { padding: 4.5rem 1.25rem 3rem; min-height: auto; }
+  #heroEyebrow { font-size: 15px; letter-spacing: 0.06em; }
+  .hero-eyebrow { margin-bottom: 1.75rem; }
+  .hero-bottom { margin-top: 3rem; }
+  .hero-sub-row { flex-direction: column; align-items: flex-start; gap: 1.75rem; }
+  .hero-body { font-size: 18px; max-width: none; }
+  .hero-ctas { width: 100%; }
+  .hero-ctas-row { flex-wrap: wrap; gap: 1rem; }
+  .hero-proof { margin-top: 2.5rem; gap: 1rem 1.25rem; }
+  .proof-logos { flex-wrap: wrap; }
+  .proof-quote { margin-left: 0; width: 100%; }
+  .scroll-indicator { display: none; }
+
+  .bridge { padding: 4.5rem 1.5rem 3.5rem; }
+  .bridge-line { height: 56px; }
+
+  /* tighten the (already single-column) scrollytelling gutters for phones */
+  .pain-left, .services-left { padding: 0 1.25rem; }
+  .pain-item, .service-item, .trust-item, .cta-item { padding: 2.5rem 0 !important; }
+  .services-intro { padding: 3rem 0 2rem !important; }
+  .trust-intro, .cta-section-intro { padding: 3rem 0 2rem; }
+  .services-cta-section { padding: 4rem 1.5rem; }
+
+  /* FOOTER */
+  footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.5rem; }
+}
 
 </style>
 </head>

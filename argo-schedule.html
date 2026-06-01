@@ -632,6 +632,83 @@ footer {
 .reveal-d1 { transition-delay: 0.1s; }
 .reveal-d2 { transition-delay: 0.2s; }
 .reveal-d3 { transition-delay: 0.32s; }
+
+/* ============================================================
+   RESPONSIVE — small screens only. The desktop layout above is
+   left completely untouched; everything here lives inside
+   max-width media queries (tablet ≤1024px, mobile ≤768px).
+   ============================================================ */
+
+/* ── TABLET (≤1024px) ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  nav { padding: 1.5rem 2rem; }
+  .nav-links { gap: 1.5rem; }
+
+  footer { padding: 3rem 2rem; gap: 2.5rem; }
+  .footer-bottom { padding: 1.5rem 2rem; }
+
+  /* reduce the largest section gutters */
+  .page-hero { padding: 6rem 2rem 4rem; }
+  .host-intro { padding: 0 2rem 3rem; }
+  .calendly-section { padding: 0 2rem 3rem; }
+  .or-divider { padding: 3rem 2rem 2rem; }
+  .contact-section { padding: 2rem 2rem 6rem; }
+
+  /* the calendar crop is tuned for the desktop width; keep it
+     contained within the tablet shell */
+  .calendly-shell { max-width: 100%; }
+}
+
+/* ── MOBILE (≤768px) ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV — stays a single row; logo word "Analytics" drops, links compact */
+  nav { padding: 0.85rem 1.1rem; }
+  .nav-logo { font-size: 10px; }
+  .nav-logo img { height: 20px; }
+  .nav-logo span { display: none; }
+  .nav-links { gap: 0.85rem; }
+  .nav-links a { font-size: 9px; letter-spacing: 0.05em; }
+  .nav-cta { padding: 6px 10px; font-size: 9px; letter-spacing: 0.03em; }
+
+  main { padding-top: 52px; }
+
+  /* PAGE HERO — headline uses clamp(vw), so it scales itself */
+  .page-hero { padding: 4rem 1.5rem 2.5rem; }
+  .expect-strip { gap: 1.25rem 1.5rem; }
+
+  /* HOST CARD — stack avatar/info/details, drop vertical dividers */
+  .host-intro { padding: 0 1.5rem 2.5rem; }
+  .host-card { flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: 1.5rem; }
+  .host-divider { display: none; }
+  .host-details { width: 100%; }
+
+  /* ── CALENDAR EMBED ──────────────────────────────────────── */
+  .calendly-section { padding: 0 1.5rem 2.5rem; }
+  .cal-header { padding: 1rem 1.25rem; }
+  /* On narrow screens Google's widget reflows taller and its own
+     header is shorter, so the desktop crop (height 905, iframe
+     -180 margin) would clip the booking controls. Give the crop
+     more height and trim the negative offset so the full booking
+     UI stays visible. */
+  .cal-iframe-crop { height: 1150px; }
+  .cal-iframe-crop iframe { height: 1330px; margin-top: -120px; }
+
+  /* OR divider */
+  .or-divider { padding: 2.5rem 1.5rem 1.5rem; gap: 1rem; }
+
+  /* CONTACT — 3-col grid → single column */
+  .contact-section { padding: 1.5rem 1.5rem 4rem; }
+  .contact-inner { grid-template-columns: 1fr; gap: 1px; }
+  .contact-card { padding: 2rem 1.5rem; }
+
+  /* FOOTER */
+  footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.5rem; }
+
+  /* IntersectionObserver reveals — guarantee visibility on mobile */
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+
 </style>
 </head>
 <body>

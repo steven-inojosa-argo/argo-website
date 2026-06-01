@@ -1417,6 +1417,107 @@ footer {
   transform: translateY(0);
 }
 
+/* ============================================================
+   RESPONSIVE — small screens only. The desktop layout above is
+   left completely untouched; everything here lives inside
+   max-width media queries (tablet ≤1024px, mobile ≤768px).
+   ============================================================ */
+
+/* ── TABLET (≤1024px) ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  nav { padding: 1.5rem 2rem; }
+  .nav-links { gap: 1.5rem; }
+
+  footer { padding: 3rem 2rem; gap: 2.5rem; }
+  .footer-bottom { padding: 1.5rem 2rem; }
+
+  .hero { padding: 5.5rem 2rem 4rem; }
+  .hero-sub-row { gap: 2rem; }
+
+  /* ── SCROLLYTELLING → single column (tablet & down) ──────────
+     The two-column "scrolling copy + sticky terminal mock" is too
+     cramped below desktop, so it collapses to one column here.
+     `!important` beats the inline min-height / padding. */
+  .services-section { grid-template-columns: 1fr !important; min-height: auto !important; }
+  .svc-left { display: none !important; }                 /* sticky mock visual */
+  .svc-right { padding: 1rem 2rem 2rem !important; }
+  .svc-spacer, .svc-spacer-bottom { height: 0 !important; }
+  .svc-item {
+    opacity: 1 !important;
+    transform: none !important;
+    min-height: auto !important;
+    padding: 3rem 0 !important;
+  }
+  .svc-body { max-width: none; }
+
+  /* reveal sections always end visible below desktop */
+  .reveal { opacity: 1 !important; transform: none !important; }
+
+  /* feature sections — stack the wide two-column blocks */
+  .domo-section { padding: 7rem 2rem; }
+  .domo-layout { grid-template-columns: 1fr; gap: 3rem; }
+  .offerings-section { padding: 6rem 2rem; }
+  .offerings-grid { grid-template-columns: 1fr 1fr; }     /* 3-col → 2-col */
+  .migration-section { padding: 6rem 2rem; }
+  .migration-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .cta-section { padding: 7rem 2rem; }
+}
+
+/* ── MOBILE (≤768px) ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV — stays a single row; logo word "Analytics" drops, links compact */
+  nav { padding: 0.85rem 1.1rem; }
+  .nav-logo { font-size: 10px; }
+  .nav-logo img { height: 20px; }
+  .nav-logo span { display: none; }
+  .nav-links { gap: 0.85rem; }
+  .nav-links a { font-size: 9px; letter-spacing: 0.05em; }
+  .nav-cta { padding: 6px 10px; font-size: 9px; letter-spacing: 0.03em; }
+
+  main { padding-top: 52px; }
+
+  /* HERO — headline font-size is clamp()-driven, left to CSS */
+  .hero { padding: 4.5rem 1.25rem 3rem; min-height: auto; }
+  .hero-eyebrow { margin-bottom: 1.75rem; }
+  .hero-sub-row { flex-direction: column; align-items: flex-start; gap: 1.75rem; margin-top: 3rem; }
+  /* width:100% stops the text block from sizing to its (unwrapped) max-content
+     inside the column flex, which otherwise overflows the viewport */
+  .hero-body { font-size: 18px; max-width: none; width: 100%; }
+  /* 3 stat columns won't shrink (flex-shrink:0) — stack them on phones */
+  .hero-stats { flex-direction: column; gap: 1.25rem; align-items: flex-start; }
+  .hero-stat { text-align: left; }
+  .scroll-indicator { display: none; }
+
+  /* scrollytelling (already single-column) — phone gutters */
+  .svc-right { padding: 1rem 1.25rem 2rem !important; }
+  .svc-item { padding: 2.5rem 0 !important; }
+
+  /* DOMO */
+  .domo-section { padding: 4.5rem 1.5rem; }
+  .domo-layout { gap: 2.5rem; margin-top: 2.5rem; }
+  .domo-metric-row { grid-template-columns: 1fr 1fr; }
+  .domo-certified { flex-wrap: wrap; padding: 1.25rem 1.5rem; }
+
+  /* OFFERINGS — 2-col → single column */
+  .offerings-section { padding: 4.5rem 1.5rem; }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 2.5rem; }
+  .offerings-grid { grid-template-columns: 1fr; }
+  .offering-card { padding: 2rem; }
+
+  /* MIGRATION */
+  .migration-section { padding: 4.5rem 1.5rem; }
+  .migration-inner { gap: 2.5rem; }
+  .mig-arrow-label { display: none; }
+
+  /* CTA */
+  .cta-section { padding: 5rem 1.5rem; }
+  .cta-btn-group { flex-direction: column; gap: 1.25rem; align-items: stretch; text-align: center; }
+
+  /* FOOTER */
+  footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.5rem; }
+}
+
 </style>
 </head>
 <body>

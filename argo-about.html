@@ -916,6 +916,103 @@ footer {
   text-transform: uppercase;
   color: rgba(61,184,206,0.35);
 }
+
+/* ============================================================
+   RESPONSIVE — small screens only. The desktop layout above is
+   left completely untouched; everything here lives inside
+   max-width media queries (tablet ≤1024px, mobile ≤768px).
+   ============================================================ */
+
+/* ── TABLET (≤1024px) ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  nav { padding: 1.5rem 2rem; }
+  .nav-links { gap: 1.5rem; }
+
+  footer { padding: 3rem 2rem; gap: 2.5rem; }
+  .footer-bottom { padding: 1.5rem 2rem; }
+
+  .hero { padding: 4rem 2rem; }
+
+  /* tighten the large section gutters */
+  .manifesto { padding: 6rem 2rem; gap: 3rem; }
+  .manifesto-paras { gap: 2rem 2.5rem; }
+  .stats-band { padding: 2.5rem; }
+  .stat-item { padding: 1.5rem 2rem; }
+  .team-section { padding: 6rem 2rem; }
+  .section-header { margin-bottom: 4rem; }
+  .origin-section { padding: 6rem 2rem; }
+  .origin-inner { gap: 4rem; }
+  .about-cta { padding: 6rem 2rem; }
+  .founder-top { padding: 2.5rem 2.5rem 1.75rem; }
+  .founder-body { padding: 2rem 2.5rem; }
+
+  /* 4-col stat band → 2-col */
+  .stats-band { grid-template-columns: 1fr 1fr; }
+  .stat-item:nth-child(2) { border-right: none; }
+}
+
+/* ── MOBILE (≤768px) ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV — stays a single row; logo word drops, links compact */
+  nav { padding: 0.85rem 1.1rem; }
+  .nav-logo { font-size: 10px; }
+  .nav-logo img { height: 20px; }
+  .nav-logo span { display: none; }
+  .nav-links { gap: 0.85rem; }
+  .nav-links a { font-size: 9px; letter-spacing: 0.05em; }
+  .nav-cta { padding: 6px 10px; font-size: 9px; letter-spacing: 0.03em; }
+
+  main { padding-top: 52px; }
+
+  /* HERO — headline uses clamp() with vw, so it already scales; left alone */
+  .hero { padding: 4.5rem 1.5rem 3rem; min-height: auto; }
+  .hero-scroll { display: none; }
+
+  /* MANIFESTO — stack label above content, single-column paragraphs */
+  .manifesto { flex-direction: column; padding: 4rem 1.5rem; gap: 2rem; }
+  .manifesto-label { width: 100%; padding-top: 0; }
+  .manifesto-pull { padding-left: 1.25rem; margin-bottom: 2rem; }
+  .manifesto-paras { grid-template-columns: 1fr; gap: 1.5rem; }
+
+  /* STATS BAND — single column, drop side borders, use bottom dividers */
+  .stats-band { grid-template-columns: 1fr; padding: 1.5rem; }
+  .stat-item {
+    padding: 1.75rem 0.5rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(61,184,206,0.08);
+  }
+  .stat-item:last-child { border-bottom: none; }
+
+  /* TEAM */
+  .team-section { padding: 4rem 1.5rem; }
+  .section-header { gap: 1rem; margin-bottom: 3rem; }
+  .founders-grid { grid-template-columns: 1fr; margin-bottom: 3rem; }
+  .founder-top { flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: 2rem 1.5rem 1.5rem; }
+  .founder-meta { text-align: left; }
+  .founder-body { padding: 1.75rem 1.5rem; }
+
+  /* ORIGIN — single column, release the sticky quote block */
+  .origin-section { padding: 4rem 1.5rem; }
+  .origin-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .origin-right { padding-top: 0; }
+  .origin-quote-block { position: static; top: auto; }
+  .origin-timeline { margin-top: 2.5rem; }
+  .timeline-item { padding: 0 0 2.5rem 2rem; }
+
+  /* CTA */
+  .about-cta { padding: 4rem 1.5rem; }
+  .cta-btns { flex-direction: column; gap: 1rem; align-items: stretch; text-align: center; }
+
+  /* FOOTER */
+  footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.5rem; }
+
+  /* Ensure scroll-revealed content is visible on mobile (override dimming) */
+  .reveal, .timeline-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
 </style>
 </head>
 <body>
