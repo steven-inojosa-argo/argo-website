@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulting — Argo Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --teal-300: #8DD7E3;
+  --teal-400: #3DB8CE;
+  --teal-500: #0091AD;
+  --teal-700: #005F72;
+  --teal-800: #004151;
+  --teal-900: #002530;
+  --teal-0:   #000E12;
+  --yellow-500: #E8DD3C;
+  --yellow-600: #C9BC1A;
+  --neutral-100: #F5F5F5;
+  --neutral-300: #BDBDBD;
+  --neutral-400: #9E9E9E;
+  --neutral-600: #424242;
+  --neutral-800: #1E1E1E;
+  --neutral-900: #111111;
+  --bg: #060D10;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--neutral-100);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  overflow-x: clip;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* STAR FIELD */
+.star-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 4rem;
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+  background: rgba(6,13,16,0.7);
+  backdrop-filter: blur(12px);
+}
+
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+}
+
+.nav-logo span { color: var(--yellow-500); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-300);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--neutral-100); }
+.nav-links a.active { color: var(--teal-400); }
+
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral-900) !important;
+  background: var(--yellow-500);
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.nav-cta:hover { background: var(--yellow-600) !important; color: var(--neutral-900) !important; }
+
+main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding-top: 80px;
+}
+
+/* ── HERO ───────────────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 6rem 4rem 5rem;
+  position: relative;
+}
+
+.hero-grid-overlay { display: none; }
+.hero-glow { display: none; }
+
+/* Background grid overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(61,184,206,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61,184,206,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 90% 100% at 50% 0%, black 0%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Radial glow behind headline */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse at top, rgba(0,145,173,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scroll-indicator {
+  position: fixed;
+  bottom: 3rem;
+  left: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--teal-400), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.scroll-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  writing-mode: vertical-rl;
+  opacity: 1;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeUp 0.7s ease 0.1s forwards;
+}
+
+.hero-eyebrow::before {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--teal-500);
+}
+
+.hero-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(52px, 6.5vw, 120px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--neutral-100);
+  max-width: 900px;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+
+.hero-headline em {
+  color: var(--teal-400);
+  font-style: normal;
+}
+
+.hero-sub-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 4rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(61,184,206,0.12);
+  gap: 4rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease 0.4s forwards;
+}
+
+.hero-body {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--neutral-300);
+  max-width: 640px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  flex-shrink: 0;
+}
+
+.hero-stat {
+  text-align: right;
+}
+
+.stat-num {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--teal-400);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+  margin-top: 0.4rem;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── CORE SERVICES ───────────────────────────────────────────────────────────── */
+.services-section {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 260vh;
+}
+
+/* LEFT: sticky visual */
+.svc-left {
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 3rem 3rem 4rem;
+  overflow: hidden;
+}
+
+/* RIGHT: scrolling copy */
+.svc-right {
+  padding: 10vh 4rem 10vh 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.svc-spacer { height: 20vh; }
+.svc-spacer-bottom { height: 30vh; }
+
+.svc-item {
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 0;
+  opacity: 0.2;
+  transform: translateX(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.svc-item.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.svc-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.svc-num::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--teal-700);
+}
+
+.svc-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3vw, 46px);
+  font-weight: 300;
+  color: var(--neutral-100);
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+
+.svc-body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.75;
+  max-width: 440px;
+}
+
+.svc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.svc-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  border: 1px solid rgba(61,184,206,0.25);
+  padding: 5px 12px;
+  border-radius: 2px;
+  background: rgba(0,145,173,0.06);
+}
+
+/* ── STICKY VISUAL PANELS ────────────────────────────────────────────────────── */
+.svc-panel {
+  position: absolute;
+  inset: 3rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--neutral-800);
+  border: 1px solid rgba(61,184,206,0.12);
+  border-radius: 8px;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+.svc-panel.visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* Panel chrome bar */
+.panel-chrome {
+  background: rgba(0,37,48,0.6);
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.chrome-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(61,184,206,0.25);
+}
+
+.chrome-dot.active { background: var(--teal-400); }
+
+.chrome-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+  margin-left: 8px;
+}
+
+.panel-body {
+  flex: 1;
+  padding: 2rem;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Panel 1: Architecture diagram */
+.arch-diagram {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.arch-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.arch-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.arch-box {
+  background: rgba(0,145,173,0.1);
+  border: 1px solid rgba(61,184,206,0.3);
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal-300);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.arch-box.source {
+  background: rgba(232,221,60,0.07);
+  border-color: rgba(232,221,60,0.3);
+  color: var(--yellow-500);
+}
+
+.arch-box.core {
+  background: rgba(0,145,173,0.18);
+  border-color: var(--teal-500);
+  color: var(--teal-300);
+  font-size: 10px;
+  padding: 14px 24px;
+}
+
+.arch-arrow {
+  font-family: var(--font-mono);
+  color: var(--teal-700);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.arch-v-arrow {
+  text-align: center;
+  color: var(--teal-700);
+  font-size: 14px;
+  margin: -6px 0;
+}
+
+.arch-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+}
+
+.arch-section-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-500);
+  text-align: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+}
+
+/* Panel 2: Pipeline / Engineering */
+.pipe-terminal {
+  background: #000E12;
+  border-radius: 6px;
+  height: 100%;
+  padding: 1.25rem;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.8;
+  position: relative;
+}
+
+.term-line { display: flex; gap: 8px; align-items: flex-start; }
+.term-prompt { color: var(--teal-500); flex-shrink: 0; }
+.term-cmd    { color: var(--neutral-100); }
+.term-out    { color: var(--neutral-400); padding-left: 16px; }
+.term-ok     { color: #28c840; padding-left: 16px; }
+.term-warn   { color: var(--yellow-500); padding-left: 16px; }
+.term-cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: var(--teal-400);
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Typing animation for terminal lines */
+.term-type {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: typeIn 0.5s steps(40, end) forwards;
+}
+
+@keyframes typeIn {
+  to { width: 100%; }
+}
+
+/* Panel 3: Strategy / Roadmap */
+.strategy-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+
+.roadmap-header {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.roadmap-phase {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.phase-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0;
+}
+
+.phase-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--teal-500);
+  background: transparent;
+  transition: background 0.4s ease;
+  flex-shrink: 0;
+}
+
+.phase-dot.done { background: var(--teal-500); }
+.phase-dot.active-dot {
+  border-color: var(--yellow-500);
+  background: var(--yellow-500);
+  box-shadow: 0 0 8px rgba(232,221,60,0.4);
+}
+
+.phase-line {
+  width: 1px;
+  flex: 1;
+  background: rgba(61,184,206,0.2);
+  min-height: 32px;
+}
+
+.phase-content {
+  padding-bottom: 1.5rem;
+  flex: 1;
+}
+
+.phase-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral-300);
+  margin-bottom: 4px;
+}
+
+.phase-title.active-phase { color: var(--yellow-500); }
+
+.phase-desc {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--neutral-400);
+  line-height: 1.5;
+}
+
+.strategy-kpi-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(61,184,206,0.1);
+}
+
+.strategy-kpi {
+  flex: 1;
+  background: rgba(0,145,173,0.06);
+  border: 1px solid rgba(61,184,206,0.15);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+
+.kpi-val {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--teal-400);
+  line-height: 1;
+  font-weight: 400;
+}
+
+.kpi-lbl {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+  margin-top: 4px;
+}
+
+/* ── DOMO FEATURE SECTION ────────────────────────────────────────────────────── */
+.domo-section {
+  position: relative;
+  z-index: 2;
+  padding: 10rem 4rem;
+  background: linear-gradient(to bottom, transparent, rgba(0,37,48,0.4), transparent);
+}
+
+.domo-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal-500);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.domo-label::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--teal-700);
+}
+
+.domo-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 4.5vw, 72px);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  max-width: 700px;
+}
+
+.domo-heading em {
+  font-style: italic;
+  color: var(--teal-400);
+}
+
+.domo-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+  margin-top: 4rem;
+}
+
+.domo-body {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+}
+
+.domo-certified {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  border: 1px solid rgba(232,221,60,0.2);
+  background: rgba(232,221,60,0.04);
+  border-radius: 6px;
+  margin-bottom: 2.5rem;
+}
+
+.certified-icon {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(232,221,60,0.12);
+  border: 1px solid rgba(232,221,60,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.certified-text-main {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--yellow-500);
+}
+
+.certified-text-sub {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--neutral-400);
+  margin-top: 2px;
+}
+
+.domo-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral-900);
+  background: var(--yellow-500);
+  padding: 14px 28px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.domo-cta:hover { background: var(--yellow-600); }
+
+/* Domo mock card */
+.domo-visual {
+  position: relative;
+}
+
+.domo-card-stack {
+  position: relative;
+}
+
+.domo-card {
+  background: var(--neutral-800);
+  border: 1px solid rgba(61,184,206,0.12);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.domo-card-chrome {
+  padding: 10px 16px;
+  background: rgba(0,37,48,0.5);
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.domo-card-body {
+  padding: 2rem;
+}
+
+.domo-metric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.domo-metric {
+  background: rgba(0,145,173,0.06);
+  border: 1px solid rgba(61,184,206,0.12);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.domo-metric-val {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--teal-400);
+  letter-spacing: -0.02em;
+}
+
+.domo-metric-lbl {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+  margin-top: 4px;
+}
+
+.domo-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 80px;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(61,184,206,0.08);
+}
+
+.domo-bar {
+  flex: 1;
+  border-radius: 2px 2px 0 0;
+  background: rgba(61,184,206,0.25);
+  transition: height 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.domo-bar.highlight {
+  background: var(--teal-500);
+}
+
+.domo-bar::after {
+  content: attr(data-val);
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  color: var(--teal-400);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.4s ease 1.5s;
+}
+
+.domo-bar-chart.animated .domo-bar::after { opacity: 1; }
+
+/* ── SERVICE OFFERINGS GRID ───────────────────────────────────────────────────── */
+.offerings-section {
+  position: relative;
+  z-index: 2;
+  padding: 8rem 4rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal-500);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 4vw, 58px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--neutral-100);
+  line-height: 1.1;
+}
+
+.section-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--neutral-400);
+}
+
+.offerings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(61,184,206,0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.offering-card {
+  background: var(--neutral-800);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.offering-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-500);
+  transition: color 0.3s ease;
+}
+
+.offering-name {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--neutral-100);
+  line-height: 1.2;
+}
+
+.offering-type {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--yellow-500);
+  border: 1px solid rgba(232,221,60,0.2);
+  padding: 3px 8px;
+  border-radius: 2px;
+  width: fit-content;
+  background: rgba(232,221,60,0.04);
+}
+
+.offering-desc {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.65;
+  flex: 1;
+}
+
+
+
+/* ── MIGRATION FEATURE ───────────────────────────────────────────────────────── */
+.migration-section {
+  position: relative;
+  z-index: 2;
+  padding: 8rem 4rem;
+}
+
+.migration-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.migration-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--yellow-500);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.migration-label::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--yellow-600);
+}
+
+.migration-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 3.5vw, 54px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--neutral-100);
+  margin-bottom: 2rem;
+}
+
+.migration-body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+}
+
+.migration-checklist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.migration-check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--neutral-300);
+}
+
+.check-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(61,184,206,0.12);
+  border: 1px solid rgba(61,184,206,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--teal-400);
+  flex-shrink: 0;
+}
+
+/* Migration flow diagram */
+.migration-flow {
+  background: var(--neutral-800);
+  border: 1px solid rgba(61,184,206,0.12);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mig-chrome {
+  padding: 10px 16px;
+  background: rgba(0,37,48,0.5);
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mig-body {
+  padding: 2rem;
+}
+
+.mig-flow-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.mig-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.mig-step-icon {
+  width: 48px; height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: rgba(0,145,173,0.1);
+  border: 1px solid rgba(61,184,206,0.2);
+}
+
+.mig-step-icon.source-icon {
+  background: rgba(232,221,60,0.08);
+  border-color: rgba(232,221,60,0.25);
+}
+
+.mig-step-icon.dest-icon {
+  background: rgba(40,200,64,0.08);
+  border-color: rgba(40,200,64,0.25);
+}
+
+.mig-step-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+  text-align: center;
+}
+
+.mig-arrow-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  padding-bottom: 24px;
+}
+
+.mig-arrow-line {
+  width: 30px;
+  height: 1px;
+  background: rgba(61,184,206,0.3);
+  position: relative;
+}
+
+.mig-arrow-line::after {
+  content: '▶';
+  position: absolute;
+  right: -6px;
+  top: -5px;
+  font-size: 8px;
+  color: var(--teal-500);
+}
+
+.mig-arrow-label {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal-700);
+  white-space: nowrap;
+}
+
+.mig-stages {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mig-stage {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  background: rgba(0,145,173,0.05);
+  border: 1px solid rgba(61,184,206,0.08);
+}
+
+.mig-stage-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal-500);
+  flex-shrink: 0;
+}
+
+.mig-stage-dot.yellow { background: var(--yellow-500); }
+.mig-stage-dot.green  { background: #28c840; }
+
+.mig-stage-text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--neutral-300);
+  flex: 1;
+}
+
+.mig-stage-badge {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #28c840;
+  background: rgba(40,200,64,0.08);
+  border: 1px solid rgba(40,200,64,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* ── CTA ─────────────────────────────────────────────────────────────────────── */
+.cta-section {
+  position: relative;
+  z-index: 2;
+  padding: 10rem 4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  overflow: hidden;
+}
+
+.cta-glow {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse at center, rgba(0,145,173,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+}
+
+.cta-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 5vw, 80px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--neutral-100);
+  line-height: 1.1;
+  max-width: 700px;
+}
+
+.cta-body {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+.cta-btn-group {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--yellow-500);
+  color: var(--neutral-900);
+  padding: 16px 32px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover { background: var(--yellow-600); }
+
+.btn-ghost {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral-300);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.btn-ghost:hover { color: var(--neutral-100); border-color: rgba(255,255,255,0.6); }
+
+.cta-contact {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--neutral-400);
+}
+
+.cta-contact a {
+  color: var(--teal-400);
+  text-decoration: none;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────────────────────────── */
+footer {
+  position: relative;
+  z-index: 1;
+  background: #000E12;
+  border-top: 1px solid rgba(61,184,206,0.15);
+  padding: 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4rem;
+}
+
+.footer-brand {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  margin-bottom: 1rem;
+}
+
+.footer-tagline {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--neutral-300);
+  line-height: 1.5;
+}
+
+.footer-col-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neutral-300);
+  margin-bottom: 1.5rem;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-links a {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--neutral-300);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--neutral-100); }
+
+.footer-bottom {
+  position: relative;
+  z-index: 1;
+  background: #000E12;
+  border-top: 1px solid rgba(61,184,206,0.1);
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--neutral-300);
+}
+
+.footer-contact {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neutral-300);
+  letter-spacing: 0.08em;
+}
+
+/* ── SCROLL REVEALS ──────────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+</style>
+</head>
+<body>
+
+<!-- Star field canvas -->
+<canvas class="star-canvas" id="starCanvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Argo <span>Analytics</span></div>
+  <ul class="nav-links">
+    <li><a href="argo-about.html">About</a></li>
+    <li><a href="argo-consulting.html" class="active">Consulting</a></li>
+    <li><a href="argo-schedule.html" class="nav-cta">Schedule a Call</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-eyebrow">Analytics for your business</div>
+
+    <h1 class="hero-headline">
+      Full-stack data,<br>
+      from <em>ingestion</em> to insight.
+    </h1>
+
+    <div class="hero-sub-row">
+      <p class="hero-body">
+        We are a full-stack data development shop — from ingestion to engineering through visualization and machine learning. Deep cloud experience. We know what "good" looks like regardless of toolset.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="stat-num" id="statClients">0</div>
+          <div class="stat-label">Client orgs</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-num">MajorDomo</div>
+          <div class="stat-label">Certified team</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-num" id="statYears">0</div>
+          <div class="stat-label">Years Domo expertise</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+
+  <!-- ── CORE SERVICES (sticky scroll) ── -->
+  <section class="services-section" id="svcSection">
+    <!-- LEFT: sticky visual -->
+    <div class="svc-left" id="svcLeft">
+
+      <!-- Panel 1: Architecture -->
+      <div class="svc-panel visible" id="panelArch">
+        <div class="panel-chrome">
+          <div class="chrome-dot active"></div>
+          <div class="chrome-dot"></div>
+          <div class="chrome-dot"></div>
+          <div class="chrome-title">Data Architecture · Blueprint</div>
+        </div>
+        <div class="panel-body">
+          <div class="arch-diagram">
+            <div class="arch-section-label">Data Sources</div>
+            <div class="arch-row">
+              <div class="arch-node">
+                <div class="arch-box source">CRM</div>
+                <div class="arch-label">Salesforce</div>
+              </div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-node">
+                <div class="arch-box source">ERP</div>
+                <div class="arch-label">SAP / NetSuite</div>
+              </div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-node">
+                <div class="arch-box source">APIs</div>
+                <div class="arch-label">REST / GQL</div>
+              </div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-node">
+                <div class="arch-box source">Files</div>
+                <div class="arch-label">S3 / GCS</div>
+              </div>
+            </div>
+
+            <div class="arch-v-arrow">↓</div>
+            <div class="arch-section-label">Ingestion & Orchestration</div>
+            <div class="arch-row">
+              <div class="arch-box core" style="min-width:220px; text-align:center;">
+                Argo Pipeline Layer<br>
+                <span style="font-size:8px; opacity:0.6; letter-spacing:0.08em;">Domo · Fivetran · dbt · Airflow</span>
+              </div>
+            </div>
+
+            <div class="arch-v-arrow">↓</div>
+            <div class="arch-section-label">Warehouse & Serving</div>
+            <div class="arch-row" style="gap:1.5rem;">
+              <div class="arch-node">
+                <div class="arch-box">Snowflake</div>
+                <div class="arch-label">Storage</div>
+              </div>
+              <div class="arch-node">
+                <div class="arch-box">BigQuery</div>
+                <div class="arch-label">Analytics</div>
+              </div>
+              <div class="arch-node">
+                <div class="arch-box">Domo</div>
+                <div class="arch-label">Visualization</div>
+              </div>
+            </div>
+
+            <div class="arch-v-arrow">↓</div>
+            <div style="display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap;">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal-300);border:1px solid rgba(61,184,206,0.2);padding:4px 10px;border-radius:2px;">Dashboards</div>
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal-300);border:1px solid rgba(61,184,206,0.2);padding:4px 10px;border-radius:2px;">ML Models</div>
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal-300);border:1px solid rgba(61,184,206,0.2);padding:4px 10px;border-radius:2px;">Alerts</div>
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal-300);border:1px solid rgba(61,184,206,0.2);padding:4px 10px;border-radius:2px;">APIs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: Engineering / Terminal -->
+      <div class="svc-panel" id="panelEng">
+        <div class="panel-chrome">
+          <div class="chrome-dot active"></div>
+          <div class="chrome-dot"></div>
+          <div class="chrome-dot"></div>
+          <div class="chrome-title">Data Engineering · Pipeline Run</div>
+        </div>
+        <div class="panel-body" style="padding:0;">
+          <div class="pipe-terminal" id="terminalEl">
+            <div class="term-line"><span class="term-prompt">›</span><span class="term-cmd">argo pipeline run --env prod --validate</span></div>
+            <div class="term-out">Connecting to Snowflake warehouse…</div>
+            <div class="term-ok">✓ Connection established (42ms)</div>
+            <div class="term-line" style="margin-top:0.5rem;"><span class="term-prompt">›</span><span class="term-cmd">Running test-driven pipeline: sales_transform</span></div>
+            <div class="term-out">  [1/5] Schema validation…</div>
+            <div class="term-ok">  ✓ 847 rows, 23 columns — schema OK</div>
+            <div class="term-out">  [2/5] Null checks…</div>
+            <div class="term-ok">  ✓ No nulls in required fields</div>
+            <div class="term-out">  [3/5] Referential integrity…</div>
+            <div class="term-ok">  ✓ All foreign keys resolved</div>
+            <div class="term-out">  [4/5] Business rules…</div>
+            <div class="term-warn">  ⚠ 3 rows flagged for review (rev < 0)</div>
+            <div class="term-out">  [5/5] Loading to prod…</div>
+            <div class="term-ok">  ✓ 844 rows committed</div>
+            <div style="margin-top:1rem;border-top:1px solid rgba(61,184,206,0.1);padding-top:1rem;">
+              <div class="term-ok">Pipeline complete · Duration: <span id="termDuration">0s</span> · Status: HEALTHY</div>
+            </div>
+            <div class="term-line" style="margin-top:0.5rem;"><span class="term-prompt">›</span><span class="term-cursor"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Strategy / Roadmap -->
+      <div class="svc-panel" id="panelStrategy">
+        <div class="panel-chrome">
+          <div class="chrome-dot active"></div>
+          <div class="chrome-dot"></div>
+          <div class="chrome-dot"></div>
+          <div class="chrome-title">Data Strategy · Roadmap Q3→Q4</div>
+        </div>
+        <div class="panel-body">
+          <div class="strategy-panel">
+            <div class="roadmap-header">
+              <span>Engagement Roadmap</span>
+              <span style="color:var(--teal-500);">Week 7 / 16</span>
+            </div>
+
+            <div class="roadmap-phase">
+              <div class="phase-marker">
+                <div class="phase-dot done"></div>
+                <div class="phase-line"></div>
+              </div>
+              <div class="phase-content">
+                <div class="phase-title">Discovery & Audit</div>
+                <div class="phase-desc">Existing stack assessment, stakeholder interviews, data maturity scoring.</div>
+              </div>
+            </div>
+
+            <div class="roadmap-phase">
+              <div class="phase-marker">
+                <div class="phase-dot done"></div>
+                <div class="phase-line"></div>
+              </div>
+              <div class="phase-content">
+                <div class="phase-title">Architecture Design</div>
+                <div class="phase-desc">Blueprint approved, technology selection finalized, migration plan drafted.</div>
+              </div>
+            </div>
+
+            <div class="roadmap-phase">
+              <div class="phase-marker">
+                <div class="phase-dot active-dot"></div>
+                <div class="phase-line"></div>
+              </div>
+              <div class="phase-content">
+                <div class="phase-title active-phase">↳ Build & Implement</div>
+                <div class="phase-desc">Pipeline construction, test-driven development, staging validation underway.</div>
+              </div>
+            </div>
+
+            <div class="roadmap-phase">
+              <div class="phase-marker">
+                <div class="phase-dot"></div>
+                <div class="phase-line"></div>
+              </div>
+              <div class="phase-content">
+                <div class="phase-title">QA & Handoff</div>
+                <div class="phase-desc">End-to-end testing, documentation, team enablement sessions.</div>
+              </div>
+            </div>
+
+            <div class="roadmap-phase">
+              <div class="phase-marker">
+                <div class="phase-dot"></div>
+              </div>
+              <div class="phase-content">
+                <div class="phase-title">Go-Live & Monitoring</div>
+                <div class="phase-desc">Production cutover, SLA monitoring, 30-day hypercare support.</div>
+              </div>
+            </div>
+
+            <div class="strategy-kpi-row">
+              <div class="strategy-kpi">
+                <div class="kpi-val">94%</div>
+                <div class="kpi-lbl">On-time delivery</div>
+              </div>
+              <div class="strategy-kpi">
+                <div class="kpi-val">4.9</div>
+                <div class="kpi-lbl">Avg. client score</div>
+              </div>
+              <div class="strategy-kpi">
+                <div class="kpi-val">0</div>
+                <div class="kpi-lbl">SLA breaches</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: scrolling copy -->
+    <div class="svc-right" id="svcRight">
+      <div class="svc-spacer"></div>
+
+      <div class="svc-item" data-panel="panelArch">
+        <div class="svc-num">01 — Core Service</div>
+        <h2 class="svc-heading">Data<br>Architecture</h2>
+        <p class="svc-body">We are masters of effective data architecture. Whatever your current data environment state, we have the technical expertise to help — and we know what "good" looks like regardless of toolset.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">Cloud-native</span>
+          <span class="svc-tag">Snowflake</span>
+          <span class="svc-tag">BigQuery</span>
+          <span class="svc-tag">Domo</span>
+          <span class="svc-tag">Fivetran</span>
+        </div>
+      </div>
+
+      <div class="svc-item" data-panel="panelEng">
+        <div class="svc-num">02 — Core Service</div>
+        <h2 class="svc-heading">Data<br>Engineering</h2>
+        <p class="svc-body">We are experts at data pipelining, modelling, and monitoring. Let us help you with test-driven data development — pipelines built to be validated, reliable, and understood.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">dbt</span>
+          <span class="svc-tag">Airflow</span>
+          <span class="svc-tag">ETL / ELT</span>
+          <span class="svc-tag">SQL</span>
+          <span class="svc-tag">Python</span>
+        </div>
+      </div>
+
+      <div class="svc-item" data-panel="panelStrategy">
+        <div class="svc-num">03 — Core Service</div>
+        <h2 class="svc-heading">Data<br>Strategy</h2>
+        <p class="svc-body">Data strategy is business-context dependent. We help our clients build on a proven foundation of core principles in developing their strategy — aligned to where they are and where they want to go.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">Roadmapping</span>
+          <span class="svc-tag">Maturity Assessment</span>
+          <span class="svc-tag">Governance</span>
+          <span class="svc-tag">Enablement</span>
+        </div>
+      </div>
+
+      <div class="svc-spacer-bottom"></div>
+    </div>
+  </section>
+
+  <!-- ── DOMO SECTION ── -->
+  <section class="domo-section reveal" id="domoSection">
+    <div class="domo-label">Core Domo Offering</div>
+    <h2 class="domo-heading">Your fractional<br><em>Domo administrator.</em></h2>
+
+    <div class="domo-layout">
+      <div>
+        <p class="domo-body">
+          We are your Domo experts — all MajorDomo certified, and many of us have worked at Domo directly. We built a productized service combining apps, pre-built solutions, included services and consulting — designed to help customers extract as much value as possible from their Domo environment.
+        </p>
+
+        <div class="domo-certified">
+          <div class="certified-icon">✦</div>
+          <div>
+            <div class="certified-text-main">MajorDomo Certified</div>
+            <div class="certified-text-sub">Advanced expertise across the full Domo platform</div>
+          </div>
+        </div>
+
+        <p class="domo-body" style="font-size:15px;">
+          Get advanced expertise so you can create and accomplish anything you imagine in Domo. We meet you where you are — whether you're just getting started or running enterprise-scale deployments.
+        </p>
+
+        <a href="#" class="domo-cta">Learn more →</a>
+      </div>
+
+      <div class="domo-visual">
+        <div class="domo-card">
+          <div class="domo-card-chrome">
+            <div class="chrome-dot active"></div>
+            <div class="chrome-dot"></div>
+            <div class="chrome-dot"></div>
+            <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--neutral-400);margin-left:8px;">Argo × Domo · Health Score</span>
+          </div>
+          <div class="domo-card-body">
+            <div class="domo-metric-row">
+              <div class="domo-metric">
+                <div class="domo-metric-val" id="domoM1">0</div>
+                <div class="domo-metric-lbl">Active datasets</div>
+              </div>
+              <div class="domo-metric">
+                <div class="domo-metric-val" id="domoM2">0%</div>
+                <div class="domo-metric-lbl">Pipeline uptime</div>
+              </div>
+              <div class="domo-metric">
+                <div class="domo-metric-val" id="domoM3">0</div>
+                <div class="domo-metric-lbl">Cards deployed</div>
+              </div>
+              <div class="domo-metric">
+                <div class="domo-metric-val" id="domoM4">0</div>
+                <div class="domo-metric-lbl">Users managed</div>
+              </div>
+            </div>
+
+            <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-500);margin-bottom:0.5rem;">Monthly pipeline health</div>
+            <div class="domo-bar-chart" id="domoChart">
+              <div class="domo-bar" style="height:60%;" data-val="91%"></div>
+              <div class="domo-bar" style="height:75%;" data-val="94%"></div>
+              <div class="domo-bar" style="height:65%;" data-val="92%"></div>
+              <div class="domo-bar" style="height:80%;" data-val="96%"></div>
+              <div class="domo-bar" style="height:70%;" data-val="93%"></div>
+              <div class="domo-bar" style="height:85%;" data-val="97%"></div>
+              <div class="domo-bar highlight" style="height:95%;" data-val="99%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICE OFFERINGS GRID ── -->
+  <section class="offerings-section reveal">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Service Offerings</div>
+        <h2 class="section-title">Built for Domo,<br>designed to deliver.</h2>
+      </div>
+      <div class="section-count">06 offerings</div>
+    </div>
+
+    <div class="offerings-grid">
+
+      <div class="offering-card">
+        <div class="offering-num">01</div>
+        <div class="offering-name">Content Scorer</div>
+        <div class="offering-type">Consulting Engagement</div>
+        <p class="offering-desc">Evaluates all content in Domo and provides an "Importance Score" based on how widely used that content is — so you know what to protect, what to prune, and where ROI lives.</p>
+
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-num">02</div>
+        <div class="offering-name">Lineage Inspector</div>
+        <div class="offering-type">Consulting Engagement</div>
+        <p class="offering-desc">Shows full page and card-level data dependencies — the complete dataflow lineage in a tabular form built for analysis. Know exactly where your data comes from and where it goes.</p>
+
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-num">03</div>
+        <div class="offering-name">Pipeline Monitoring</div>
+        <div class="offering-type">Consulting Engagement</div>
+        <p class="offering-desc">We bring deep experience to pipeline monitoring, alerting, and SLA management. Know the moment something breaks — and have the team to fix it fast.</p>
+
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-num">04</div>
+        <div class="offering-name">User Management Tool</div>
+        <div class="offering-type">Consulting Engagement</div>
+        <p class="offering-desc">Interacting with your users at scale can be tricky in Domo. We've built tooling to dynamically create groups, query user metadata, and better manage the user base — at any scale.</p>
+
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-num">05</div>
+        <div class="offering-name">Performing Changes At Scale</div>
+        <div class="offering-type">Consulting Engagement</div>
+        <p class="offering-desc">Used alongside our User Management tool to perform mass actions in Domo — mass alert subscription, scheduled report subscription, mass card editing. One operation, thousands of changes.</p>
+
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-num">06</div>
+        <div class="offering-name">Magic ETL → SQL Translator</div>
+        <div class="offering-type">Consulting Engagement</div>
+        <p class="offering-desc">Takes a Magic ETL dataflow and outputs clean, readable SQL — accelerating migrations, audits, and the transition from visual to code-first data transformation workflows.</p>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── MIGRATION FEATURE ── -->
+  <section class="migration-section reveal">
+    <div class="migration-inner">
+      <div>
+        <div class="migration-label">Featured Product</div>
+        <h2 class="migration-heading">Domo Data Pipeline Migration</h2>
+        <p class="migration-body">
+          Ready to migrate your data pipelines from Domo to a data warehouse like Snowflake or BigQuery and leverage tools like dbt? This productized service — combining proprietary code, know-how, pre-built solutions and custom consulting — gets you safely migrated.
+        </p>
+        <ul class="migration-checklist">
+          <li class="migration-check"><div class="check-icon">✓</div> Built-in validation and QA at every stage</li>
+          <li class="migration-check"><div class="check-icon">✓</div> Cost optimization and resource right-sizing</li>
+          <li class="migration-check"><div class="check-icon">✓</div> Pipeline monitoring from day one</li>
+          <li class="migration-check"><div class="check-icon">✓</div> Zero-downtime cutover strategy</li>
+          <li class="migration-check"><div class="check-icon">✓</div> Documentation and team enablement included</li>
+        </ul>
+        <a href="argo-schedule.html" class="btn-primary">Start the conversation →</a>
+      </div>
+
+      <div>
+        <div class="migration-flow">
+          <div class="mig-chrome">
+            <div class="chrome-dot active"></div>
+            <div class="chrome-dot"></div>
+            <div class="chrome-dot"></div>
+            <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--neutral-400);margin-left:8px;">Migration Flow · Argo Validated</span>
+          </div>
+          <div class="mig-body">
+            <div class="mig-flow-row">
+              <div class="mig-step">
+                <div class="mig-step-icon source-icon">🟡</div>
+                <div class="mig-step-label">Domo<br>Source</div>
+              </div>
+              <div class="mig-arrow-col">
+                <div class="mig-arrow-line"></div>
+                <div class="mig-arrow-label">Extract</div>
+              </div>
+              <div class="mig-step">
+                <div class="mig-step-icon">⚙</div>
+                <div class="mig-step-label">Argo<br>Transform</div>
+              </div>
+              <div class="mig-arrow-col">
+                <div class="mig-arrow-line"></div>
+                <div class="mig-arrow-label">Load</div>
+              </div>
+              <div class="mig-step">
+                <div class="mig-step-icon dest-icon">❄</div>
+                <div class="mig-step-label">Snowflake /<br>BigQuery</div>
+              </div>
+            </div>
+
+            <div class="mig-stages">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal-500);margin-bottom:0.25rem;">Migration stages</div>
+              <div class="mig-stage">
+                <div class="mig-stage-dot"></div>
+                <div class="mig-stage-text">Discovery & dependency mapping</div>
+                <span class="mig-stage-badge">Done</span>
+              </div>
+              <div class="mig-stage">
+                <div class="mig-stage-dot"></div>
+                <div class="mig-stage-text">SQL translation & validation</div>
+                <span class="mig-stage-badge">Done</span>
+              </div>
+              <div class="mig-stage">
+                <div class="mig-stage-dot yellow"></div>
+                <div class="mig-stage-text">Parallel run & QA</div>
+                <span style="font-family:var(--font-mono);font-size:8px;color:var(--yellow-500);background:rgba(232,221,60,0.08);border:1px solid rgba(232,221,60,0.2);padding:2px 6px;border-radius:2px;">In progress</span>
+              </div>
+              <div class="mig-stage" style="opacity:0.4;">
+                <div class="mig-stage-dot" style="background:rgba(61,184,206,0.3);"></div>
+                <div class="mig-stage-text">Cutover & monitoring</div>
+                <span style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-400);">Pending</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta-section reveal">
+    <div class="cta-glow"></div>
+    <div class="cta-eyebrow">Ready to Start?</div>
+    <h2 class="cta-heading">Talk to our team.</h2>
+    <p class="cta-body">Don't settle for a one-size-fits-all approach — partner with Argo Analytics for personalized, effective data analytics solutions.</p>
+    <div class="cta-btn-group">
+      <a href="argo-schedule.html" class="btn-primary">Schedule a consultation</a>
+    </div>
+    <div class="cta-contact">
+      Or reach us at <a href="mailto:interest@argoanalytics.ai">interest@argoanalytics.ai</a> · (208) 313-5165
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Argo<span style="color:var(--yellow-500)">.</span>Analytics</div>
+    <div class="footer-tagline">We craft data into business value through engineering and analytics.</div>
+  </div>
+  <div>
+    <div class="footer-col-label">Services</div>
+    <ul class="footer-links">
+      <li><a href="argo-consulting.html">Consulting Services</a></li>
+      <li><a href="argo-consulting.html">Data Architecture</a></li>
+      <li><a href="argo-consulting.html">Data Engineering</a></li>
+      <li><a href="argo-consulting.html">Domo Administration</a></li>
+      <li><a href="argo-consulting.html">Pipeline Migration</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-label">Company</div>
+    <ul class="footer-links">
+      <li><a href="argo-about.html">Your Argo Team</a></li>
+      <li><a href="argo-schedule.html">Schedule a Consultation</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Service Terms</a></li>
+      <li><a href="argo-schedule.html">Contact Us</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2025 Argo Analytics. All rights reserved.</span>
+  <span class="footer-contact">interest@argoanalytics.ai · (208) 313-5165</span>
+</div>
+
+<script>
+// ── STAR FIELD ─────────────────────────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('starCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [], cursorStars = [];
+  let mouse = { x: -9999, y: -9999 };
+  let lastMouse = { x: -9999, y: -9999 };
+
+  const MAX_CURSOR_STARS = 60;
+  const CONNECT_DIST_BG  = 100;
+  const CONNECT_DIST_CUR = 160;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 180; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.2 + 0.2,
+        alpha: Math.random() * 0.6 + 0.1,
+        speed: Math.random() * 0.3 + 0.05,
+        isTeal: Math.random() > 0.85
+      });
+    }
+  }
+
+  function spawnCursorStar(x, y) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 0.8 + 0.2;
+    cursorStars.push({
+      x, y,
+      vx: Math.cos(angle) * speed * 0.6,
+      vy: Math.sin(angle) * speed * 0.6 - 0.3,
+      r: Math.random() * 1.4 + 0.4,
+      life: 1.0,
+      decay: Math.random() * 0.008 + 0.004,
+      isTeal: Math.random() > 0.5
+    });
+    if (cursorStars.length > MAX_CURSOR_STARS) cursorStars.shift();
+  }
+
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    const dx = mouse.x - lastMouse.x;
+    const dy = mouse.y - lastMouse.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist > 8) {
+      const count = Math.min(Math.floor(dist / 8), 4);
+      for (let i = 0; i < count; i++) {
+        const t = i / count;
+        spawnCursorStar(
+          lastMouse.x + dx * t + (Math.random() - 0.5) * 4,
+          lastMouse.y + dy * t + (Math.random() - 0.5) * 4
+        );
+      }
+      lastMouse.x = mouse.x;
+      lastMouse.y = mouse.y;
+    }
+  });
+
+  function drawLine(x1, y1, x2, y2, maxDist, baseAlpha, color) {
+    const dx = x1 - x2, dy = y1 - y2;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist >= maxDist) return;
+    const alpha = baseAlpha * (1 - dist / maxDist);
+    ctx.strokeStyle = color.replace('ALPHA', alpha.toFixed(3));
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    for (const s of stars) {
+      s.y -= s.speed;
+      if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = s.isTeal ? `rgba(61,184,206,${s.alpha})` : `rgba(245,245,245,${s.alpha})`;
+      ctx.fill();
+    }
+
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < stars.length; i++) {
+      for (let j = i + 1; j < stars.length; j++) {
+        drawLine(stars[i].x, stars[i].y, stars[j].x, stars[j].y,
+          CONNECT_DIST_BG, 0.06, 'rgba(61,184,206,ALPHA)');
+      }
+    }
+
+    for (let i = cursorStars.length - 1; i >= 0; i--) {
+      const cs = cursorStars[i];
+      cs.x += cs.vx;
+      cs.y += cs.vy;
+      cs.life -= cs.decay;
+      if (cs.life <= 0) { cursorStars.splice(i, 1); continue; }
+      const a = cs.life * (cs.isTeal ? 0.9 : 0.7);
+      ctx.beginPath();
+      ctx.arc(cs.x, cs.y, cs.r * cs.life, 0, Math.PI * 2);
+      ctx.fillStyle = cs.isTeal ? `rgba(61,184,206,${a})` : `rgba(245,245,245,${a})`;
+      ctx.fill();
+    }
+
+    ctx.lineWidth = 0.6;
+    for (let i = 0; i < cursorStars.length; i++) {
+      const cs = cursorStars[i];
+      for (let j = i + 1; j < cursorStars.length; j++) {
+        const cs2 = cursorStars[j];
+        const lifeAlpha = Math.min(cs.life, cs2.life);
+        drawLine(cs.x, cs.y, cs2.x, cs2.y,
+          CONNECT_DIST_CUR * 0.7, 0.35 * lifeAlpha, 'rgba(61,184,206,ALPHA)');
+      }
+      for (const s of stars) {
+        drawLine(cs.x, cs.y, s.x, s.y,
+          CONNECT_DIST_CUR, 0.25 * cs.life, 'rgba(61,184,206,ALPHA)');
+      }
+    }
+
+    if (mouse.x > 0) {
+      const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 80);
+      grad.addColorStop(0, 'rgba(61,184,206,0.04)');
+      grad.addColorStop(1, 'rgba(61,184,206,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 80, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  initStars();
+  draw();
+  window.addEventListener('resize', () => { resize(); initStars(); });
+})();
+
+// ── HERO COUNTER ───────────────────────────────────────────────────────────────
+function countUp(id, target, suffix, duration) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(ease * target) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+setTimeout(() => {
+  countUp('statClients', 40, '+', 1600);
+  countUp('statYears', 10, '+', 1400);
+}, 600);
+
+// ── SERVICES STICKY SCROLL ─────────────────────────────────────────────────────
+(function() {
+  const section = document.getElementById('svcSection');
+  const items = section.querySelectorAll('.svc-item');
+  const panels = {
+    panelArch: document.getElementById('panelArch'),
+    panelEng:  document.getElementById('panelEng'),
+    panelStrategy: document.getElementById('panelStrategy'),
+  };
+
+  let currentPanel = 'panelArch';
+
+  function showPanel(id) {
+    if (id === currentPanel) return;
+    currentPanel = id;
+    Object.keys(panels).forEach(k => {
+      panels[k].classList.toggle('visible', k === id);
+    });
+  }
+
+  function onScroll() {
+    const vh = window.innerHeight;
+    const viewMid = vh * 0.5;
+    let nearest = null, nearestDist = Infinity;
+
+    items.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      const dist = Math.abs(mid - viewMid);
+      const inView = rect.top < vh * 0.65 && rect.bottom > vh * 0.35;
+      item.classList.toggle('active', inView);
+      if (inView && dist < nearestDist) {
+        nearestDist = dist;
+        nearest = item.dataset.panel;
+      }
+    });
+
+    if (nearest) showPanel(nearest);
+  }
+
+  // Init
+  items[0].classList.add('active');
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+// ── SCROLL REVEAL ──────────────────────────────────────────────────────────────
+(function() {
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+
+        // Domo metrics animation
+        if (e.target.id === 'domoSection') {
+          setTimeout(() => {
+            countUp('domoM1', 312, '', 1400);
+            setTimeout(() => { document.getElementById('domoM2').textContent = '99.8%'; }, 1200);
+            countUp('domoM3', 847, '', 1600);
+            countUp('domoM4', 2400, '', 1800);
+            document.getElementById('domoChart').classList.add('animated');
+          }, 300);
+        }
+
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  reveals.forEach(r => io.observe(r));
+})();
+
+// ── TERMINAL DURATION TIMER ────────────────────────────────────────────────────
+(function() {
+  let sec = 0;
+  setInterval(() => {
+    sec++;
+    const el = document.getElementById('termDuration');
+    if (el) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      el.textContent = m > 0 ? `${m}m ${s}s` : `${s}s`;
+    }
+  }, 1000);
+})();
+</script>
+</body>
+</html>

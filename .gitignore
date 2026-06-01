@@ -1,0 +1,33 @@
+# Archivos del sistema operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Archivos temporales
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+*.bak
+*.cache
+*.log
+
+# Editores e IDEs
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local

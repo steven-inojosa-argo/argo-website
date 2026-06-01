@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Argo Analytics — Schedule a Call</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- Calendly widget CSS -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --teal-400: #3DB8CE;
+  --teal-500: #0091AD;
+  --teal-700: #005F72;
+  --teal-900: #002530;
+  --teal-0: #000E12;
+  --yellow-500: #E8DD3C;
+  --yellow-600: #C9BC1A;
+  --neutral-100: #F5F5F5;
+  --neutral-300: #BDBDBD;
+  --neutral-400: #9E9E9E;
+  --neutral-600: #424242;
+  --neutral-800: #1E1E1E;
+  --neutral-900: #111111;
+  --bg: #060D10;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--neutral-100);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  overflow-x: clip;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.star-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 4rem;
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+  background: rgba(6,13,16,0.7);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--yellow-500); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-300);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--neutral-100); }
+.nav-links a.active { color: var(--teal-400); }
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral-900) !important;
+  background: var(--yellow-500);
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--yellow-600) !important; }
+
+main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding-top: 80px;
+}
+
+/* ── PAGE HERO ────────────────────────────────────────────────────────────── */
+.page-hero {
+  padding: 7rem 4rem 5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  overflow: hidden;
+}
+
+/* Background grid */
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(61,184,206,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61,184,206,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 90% 100% at 50% 0%, black 0%, transparent 80%);
+  pointer-events: none;
+}
+
+/* Radial glow behind headline */
+.page-hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse at top, rgba(0,145,173,0.10) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.1s forwards;
+  position: relative;
+  z-index: 1;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--teal-700);
+}
+
+.hero-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(44px, 6vw, 96px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.08;
+  color: var(--neutral-100);
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.25s forwards;
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+}
+.hero-headline em { color: var(--teal-400); font-style: normal; }
+.hero-headline .yl { color: var(--yellow-500); font-style: normal; }
+
+.hero-sub {
+  font-family: var(--font-serif);
+  font-size: clamp(17px, 1.8vw, 22px);
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.65;
+  max-width: 560px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.4s forwards;
+  position: relative;
+  z-index: 1;
+}
+
+/* What to expect strip */
+.expect-strip {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  margin-top: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.55s forwards;
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.expect-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+}
+.expect-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal-500);
+  box-shadow: 0 0 6px rgba(0,145,173,0.6);
+  flex-shrink: 0;
+}
+.expect-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(61,184,206,0.15);
+}
+
+/* ── HOST CARD ────────────────────────────────────────────────────────────── */
+.host-intro {
+  position: relative;
+  z-index: 2;
+  padding: 0 4rem 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.host-card {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  background: rgba(10,20,24,0.7);
+  border: 1px solid rgba(61,184,206,0.12);
+  padding: 1.5rem 2.5rem;
+  max-width: 600px;
+  width: 100%;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.65s forwards;
+  position: relative;
+  overflow: hidden;
+}
+.host-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--teal-400), var(--teal-700));
+}
+
+.host-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(61,184,206,0.25);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--teal-900), rgba(61,184,206,0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--teal-400);
+}
+
+.host-info {}
+.host-name {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--neutral-100);
+  margin-bottom: 2px;
+}
+.host-role {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+}
+
+.host-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(61,184,206,0.12);
+  flex-shrink: 0;
+}
+
+.host-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.host-detail {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--neutral-400);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.host-detail-icon { color: var(--teal-400); font-size: 12px; }
+
+/* ── CALENDLY EMBED SECTION ───────────────────────────────────────────────── */
+.calendly-section {
+  position: relative;
+  z-index: 2;
+  padding: 0 4rem 6rem;
+}
+
+.calendly-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: rgba(8,16,20,0.6);
+  border: 1px solid rgba(61,184,206,0.12);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(61,184,206,0.04),
+    0 40px 80px rgba(0,0,0,0.5),
+    0 0 60px rgba(0,145,173,0.04);
+  position: relative;
+}
+
+.calendly-shell::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(61,184,206,0.4), transparent);
+}
+
+/* Header bar above calendly */
+.cal-header {
+  padding: 1rem 2rem;
+  background: rgba(0,14,18,0.8);
+  border-bottom: 1px solid rgba(61,184,206,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cal-header-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.cal-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #28C840;
+  box-shadow: 0 0 6px rgba(40,200,64,0.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(40,200,64,0.6); }
+  50% { opacity: 0.7; box-shadow: 0 0 12px rgba(40,200,64,0.4); }
+}
+
+.cal-header-meta {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--neutral-400);
+}
+
+/* Override Calendly embed background */
+.calendly-inline-widget {
+  min-width: 320px;
+  height: 700px;
+  background: transparent !important;
+}
+
+/* ── OR DIVIDER ───────────────────────────────────────────────────────────── */
+.or-divider {
+  position: relative;
+  z-index: 2;
+  padding: 4rem 4rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+.or-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(61,184,206,0.15), transparent);
+}
+.or-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+  flex-shrink: 0;
+}
+
+/* ── CONTACT ALTERNATIVES ─────────────────────────────────────────────────── */
+.contact-section {
+  position: relative;
+  z-index: 2;
+  padding: 2rem 4rem 8rem;
+}
+
+.contact-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.contact-card {
+  background: rgba(10,20,24,0.7);
+  border: 1px solid rgba(61,184,206,0.1);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color 0.3s, background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.contact-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(61,184,206,0.04), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.contact-card:hover {
+  border-color: rgba(61,184,206,0.3);
+  background: rgba(10,20,24,0.9);
+}
+.contact-card:hover::before { opacity: 1; }
+
+.contact-icon {
+  font-size: 20px;
+  color: var(--teal-400);
+  line-height: 1;
+}
+
+.contact-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+}
+
+.contact-value {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--neutral-100);
+  line-height: 1.2;
+}
+.contact-value a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.contact-value a:hover { color: var(--teal-400); }
+
+.contact-note {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.6;
+  margin-top: auto;
+}
+
+/* PREFER card — yellow accent */
+.contact-card.prefer {
+  border-color: rgba(232,221,60,0.15);
+}
+.contact-card.prefer::before {
+  background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(232,221,60,0.04), transparent);
+}
+.contact-card.prefer:hover {
+  border-color: rgba(232,221,60,0.3);
+}
+.contact-card.prefer .contact-label { color: var(--yellow-500); }
+.contact-card.prefer .contact-icon { color: var(--yellow-500); }
+
+/* ── FOOTER ───────────────────────────────────────────────────────────────── */
+footer {
+  position: relative;
+  z-index: 1;
+  background: #000E12;
+  border-top: 1px solid rgba(61,184,206,0.15);
+  padding: 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4rem;
+}
+.footer-brand {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  margin-bottom: 1rem;
+}
+.footer-tagline {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--neutral-300);
+  line-height: 1.5;
+}
+.footer-col-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neutral-300);
+  margin-bottom: 1.5rem;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.footer-links a {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--neutral-300);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--neutral-100); }
+.footer-bottom {
+  position: relative;
+  z-index: 1;
+  background: #000E12;
+  border-top: 1px solid rgba(61,184,206,0.1);
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--neutral-300);
+}
+.footer-contact {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neutral-300);
+  letter-spacing: 0.08em;
+}
+
+/* ── ANIMATIONS ───────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+.reveal-d3 { transition-delay: 0.32s; }
+</style>
+</head>
+<body>
+
+<canvas class="star-canvas" id="stars"></canvas>
+
+<nav>
+  <a href="argo-home.html" class="nav-logo">Argo <span>Analytics</span></a>
+  <ul class="nav-links">
+    <li><a href="argo-about.html">About</a></li>
+    <li><a href="argo-consulting.html">Consulting</a></li>
+    <li><a href="argo-schedule.html" class="nav-cta active">Schedule a Call</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="hero-eyebrow">Schedule a call</div>
+
+    <h1 class="hero-headline">
+      Let's talk<br>
+      about your <em>data.</em>
+    </h1>
+
+    <p class="hero-sub">
+      Book a free 30-minute Business Analytics Assessment.
+      We'll listen first, then tell you honestly what we think.
+    </p>
+
+    <div class="expect-strip">
+      <div class="expect-item">
+        <div class="expect-dot"></div>
+        30-minute session
+      </div>
+      <div class="expect-divider"></div>
+      <div class="expect-item">
+        <div class="expect-dot"></div>
+        Google Meet video call
+      </div>
+      <div class="expect-divider"></div>
+      <div class="expect-item">
+        <div class="expect-dot"></div>
+        Free analytics assessment
+      </div>
+      <div class="expect-divider"></div>
+      <div class="expect-item">
+        <div class="expect-dot"></div>
+        No commitment required
+      </div>
+    </div>
+  </section>
+
+  <!-- HOST CARD -->
+  <div class="host-intro">
+    <div class="host-card">
+      <div class="host-avatar">AC</div>
+      <div class="host-info">
+        <div class="host-name">Andrew Chaffin</div>
+        <div class="host-role">Co-Founder · Argo Analytics</div>
+      </div>
+      <div class="host-divider"></div>
+      <div class="host-details">
+        <div class="host-detail">
+          <span class="host-detail-icon">◷</span>
+          30 min appointments
+        </div>
+        <div class="host-detail">
+          <span class="host-detail-icon">◈</span>
+          Google Meet link sent on confirm
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDLY EMBED -->
+  <section class="calendly-section">
+    <div class="calendly-shell reveal">
+      <div class="cal-header">
+        <div class="cal-header-label">
+          <div class="cal-status-dot"></div>
+          Live availability
+        </div>
+        <div class="cal-header-meta">Andrew Chaffin · Argo Analytics</div>
+      </div>
+      <!-- Calendly inline widget -->
+      <div class="calendly-inline-widget"
+           data-url="https://calendly.com/andrew-argoanalytics/30min?hide_gdpr_banner=1&background_color=060D10&text_color=F5F5F5&primary_color=0091AD"
+           style="min-width:320px;height:700px;">
+      </div>
+    </div>
+  </section>
+
+  <!-- OR DIVIDER -->
+  <div class="or-divider reveal">
+    <div class="or-line"></div>
+    <span class="or-label">Prefer a different channel?</span>
+    <div class="or-line"></div>
+  </div>
+
+  <!-- CONTACT ALTERNATIVES -->
+  <section class="contact-section">
+    <div class="contact-inner">
+
+      <div class="contact-card reveal">
+        <div class="contact-icon">✉</div>
+        <div class="contact-label">Email us</div>
+        <div class="contact-value">
+          <a href="mailto:interest@argoanalytics.ai">interest@argoanalytics.ai</a>
+        </div>
+        <div class="contact-note">
+          Drop us a line any time. We respond to every message
+          — usually within one business day.
+        </div>
+      </div>
+
+      <div class="contact-card reveal reveal-d1">
+        <div class="contact-icon">◎</div>
+        <div class="contact-label">Call or text</div>
+        <div class="contact-value">
+          <a href="tel:2083135165">(208) 313-5165</a>
+        </div>
+        <div class="contact-note">
+          Prefer to talk? Call or text us directly.
+          Real humans answer — no phone trees, no hold music.
+        </div>
+      </div>
+
+      <div class="contact-card prefer reveal reveal-d2">
+        <div class="contact-icon">⟡</div>
+        <div class="contact-label">What to expect</div>
+        <div class="contact-value" style="font-size: 18px; line-height: 1.4;">
+          An honest conversation,<br>not a sales pitch.
+        </div>
+        <div class="contact-note">
+          We'll assess your current data stack, talk through
+          your goals, and tell you plainly what we think —
+          whether that leads to a partnership or not.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Argo Analytics</div>
+    <p class="footer-tagline">Navigating complexity.<br>Delivering clarity.</p>
+  </div>
+  <div>
+    <div class="footer-col-label">Services</div>
+    <ul class="footer-links">
+      <li><a href="argo-consulting.html">Data Engineering</a></li>
+      <li><a href="argo-consulting.html">Analytics Consulting</a></li>
+      <li><a href="argo-consulting.html">Domo Optimization</a></li>
+      <li><a href="argo-consulting.html">Data Strategy</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-label">Company</div>
+    <ul class="footer-links">
+      <li><a href="argo-about.html">About</a></li>
+      <li><a href="argo-about.html">Team</a></li>
+      <li><a href="argo-schedule.html">Schedule a Call</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2025 Argo Analytics. All rights reserved.</span>
+  <span class="footer-contact">interest@argoanalytics.ai · (208) 313-5165</span>
+</div>
+
+<!-- Calendly widget JS -->
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
+<script>
+// ── STARS + CURSOR CONSTELLATION ─────────────────────────────────────────────
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let W, H, stars = [], cursorStars = [];
+let mouse = { x: -9999, y: -9999 };
+let lastMouse = { x: -9999, y: -9999 };
+
+const MAX_CURSOR_STARS = 60;
+const CONNECT_DIST_BG  = 100;
+const CONNECT_DIST_CUR = 160;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 180; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.2 + 0.2,
+      alpha: Math.random() * 0.6 + 0.1,
+      speed: Math.random() * 0.3 + 0.05,
+      isTeal: Math.random() > 0.85
+    });
+  }
+}
+
+function spawnCursorStar(x, y) {
+  const angle = Math.random() * Math.PI * 2;
+  const speed = Math.random() * 0.8 + 0.2;
+  cursorStars.push({
+    x, y,
+    vx: Math.cos(angle) * speed * 0.6,
+    vy: Math.sin(angle) * speed * 0.6 - 0.3,
+    r:  Math.random() * 1.4 + 0.4,
+    life: 1.0,
+    decay: Math.random() * 0.008 + 0.004,
+    isTeal: Math.random() > 0.5
+  });
+  if (cursorStars.length > MAX_CURSOR_STARS) cursorStars.shift();
+}
+
+window.addEventListener('mousemove', e => {
+  mouse.x = e.clientX; mouse.y = e.clientY;
+  const dx = mouse.x - lastMouse.x, dy = mouse.y - lastMouse.y;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  if (dist > 8) {
+    const count = Math.min(Math.floor(dist / 8), 4);
+    for (let i = 0; i < count; i++) {
+      const t = i / count;
+      spawnCursorStar(
+        lastMouse.x + dx * t + (Math.random() - 0.5) * 4,
+        lastMouse.y + dy * t + (Math.random() - 0.5) * 4
+      );
+    }
+    lastMouse.x = mouse.x; lastMouse.y = mouse.y;
+  }
+});
+
+function drawLine(x1, y1, x2, y2, maxDist, baseAlpha, color) {
+  const dx = x1-x2, dy = y1-y2, dist = Math.sqrt(dx*dx+dy*dy);
+  if (dist >= maxDist) return;
+  const alpha = baseAlpha * (1 - dist / maxDist);
+  ctx.strokeStyle = color.replace('ALPHA', alpha.toFixed(3));
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, W, H);
+
+  for (const s of stars) {
+    s.y -= s.speed;
+    if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = s.isTeal ? `rgba(61,184,206,${s.alpha})` : `rgba(245,245,245,${s.alpha})`;
+    ctx.fill();
+  }
+
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i < stars.length; i++)
+    for (let j = i+1; j < stars.length; j++)
+      drawLine(stars[i].x, stars[i].y, stars[j].x, stars[j].y, CONNECT_DIST_BG, 0.06, 'rgba(61,184,206,ALPHA)');
+
+  for (let i = cursorStars.length-1; i >= 0; i--) {
+    const cs = cursorStars[i];
+    cs.x += cs.vx; cs.y += cs.vy; cs.life -= cs.decay;
+    if (cs.life <= 0) { cursorStars.splice(i, 1); continue; }
+    const a = cs.life * (cs.isTeal ? 0.9 : 0.7);
+    ctx.beginPath();
+    ctx.arc(cs.x, cs.y, cs.r * cs.life, 0, Math.PI * 2);
+    ctx.fillStyle = cs.isTeal ? `rgba(61,184,206,${a})` : `rgba(245,245,245,${a})`;
+    ctx.fill();
+  }
+
+  ctx.lineWidth = 0.6;
+  for (let i = 0; i < cursorStars.length; i++) {
+    const cs = cursorStars[i];
+    for (let j = i+1; j < cursorStars.length; j++) {
+      const la = Math.min(cs.life, cursorStars[j].life);
+      drawLine(cs.x, cs.y, cursorStars[j].x, cursorStars[j].y, CONNECT_DIST_CUR*0.7, 0.35*la, 'rgba(61,184,206,ALPHA)');
+    }
+    for (const s of stars)
+      drawLine(cs.x, cs.y, s.x, s.y, CONNECT_DIST_CUR, 0.25*cs.life, 'rgba(61,184,206,ALPHA)');
+  }
+
+  if (mouse.x > 0) {
+    const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 80);
+    grad.addColorStop(0, 'rgba(61,184,206,0.04)');
+    grad.addColorStop(1, 'rgba(61,184,206,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 80, 0, Math.PI*2); ctx.fill();
+  }
+
+  requestAnimationFrame(drawStars);
+}
+
+resize(); initStars(); drawStars();
+window.addEventListener('resize', () => { resize(); initStars(); });
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

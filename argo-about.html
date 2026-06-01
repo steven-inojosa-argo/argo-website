@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Argo Analytics — About</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --teal-400: #3DB8CE;
+  --teal-500: #0091AD;
+  --teal-700: #005F72;
+  --teal-900: #002530;
+  --teal-0: #000E12;
+  --yellow-500: #E8DD3C;
+  --yellow-600: #C9BC1A;
+  --neutral-100: #F5F5F5;
+  --neutral-300: #BDBDBD;
+  --neutral-400: #9E9E9E;
+  --neutral-600: #424242;
+  --neutral-800: #1E1E1E;
+  --neutral-900: #111111;
+  --bg: #060D10;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--neutral-100);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  overflow-x: clip;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.star-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+/* Background grid overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(61,184,206,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61,184,206,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 90% 100% at 50% 0%, black 0%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Radial glow behind headline */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse at top, rgba(0,145,173,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 4rem;
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+  background: rgba(6,13,16,0.7);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+}
+.nav-logo span { color: var(--yellow-500); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neutral-300);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--neutral-100); }
+.nav-links a.active { color: var(--teal-400); }
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral-900) !important;
+  background: var(--yellow-500);
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--yellow-600) !important; }
+
+main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding-top: 80px;
+}
+
+/* ── HERO ─────────────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 4rem;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(61,184,206,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61,184,206,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--teal-700);
+}
+
+.hero-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(52px, 8vw, 130px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.05;
+  color: var(--neutral-100);
+  opacity: 0;
+  animation: fadeUp 1s ease 0.4s forwards;
+}
+.hero-headline em {
+  color: var(--teal-400);
+  font-style: normal;
+}
+.hero-headline .yellow { color: var(--yellow-500); font-style: normal; }
+
+.hero-sub {
+  margin-top: 2rem;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.6;
+  max-width: 640px;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.7s forwards;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.2s forwards;
+}
+.hero-scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--teal-400), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+.hero-scroll-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  opacity: 0.6;
+  writing-mode: vertical-rl;
+}
+
+/* ── MANIFESTO SECTION ────────────────────────────────────────────────────── */
+.manifesto {
+  position: relative;
+  z-index: 2;
+  padding: 10rem 4rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 6rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.manifesto-label {
+  flex-shrink: 0;
+  width: 160px;
+  padding-top: 0.6rem;
+}
+.manifesto-label span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.manifesto-label span::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--teal-700);
+}
+
+.manifesto-content {
+  flex: 1;
+}
+
+.manifesto-pull {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3.5vw, 52px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--neutral-100);
+  line-height: 1.25;
+  margin-bottom: 3rem;
+  border-left: 2px solid var(--teal-700);
+  padding-left: 2rem;
+}
+.manifesto-pull em { color: var(--teal-400); font-style: normal; }
+
+.manifesto-paras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 4rem;
+}
+
+.manifesto-p {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.85;
+}
+.manifesto-p strong {
+  color: var(--neutral-300);
+  font-weight: 400;
+}
+
+/* ── STATS BAND ───────────────────────────────────────────────────────────── */
+.stats-band {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgba(61,184,206,0.1);
+  border-bottom: 1px solid rgba(61,184,206,0.1);
+  padding: 4rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: rgba(0,37,48,0.3);
+}
+
+.stat-item {
+  padding: 2rem 3rem;
+  border-right: 1px solid rgba(61,184,206,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.stat-item:last-child { border-right: none; }
+
+.stat-num {
+  font-family: var(--font-mono);
+  font-size: clamp(36px, 4vw, 60px);
+  font-weight: 400;
+  color: var(--teal-400);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-num span { color: var(--yellow-500); }
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+}
+
+.stat-sub {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--neutral-400);
+  opacity: 0.7;
+  margin-top: 0.25rem;
+}
+
+/* ── TEAM SECTION ─────────────────────────────────────────────────────────── */
+.team-section {
+  position: relative;
+  z-index: 2;
+  padding: 10rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 6rem;
+}
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  white-space: nowrap;
+}
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(61,184,206,0.3), transparent);
+}
+.section-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 4vw, 64px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--neutral-100);
+  margin-bottom: 1rem;
+}
+.section-sub {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  max-width: 520px;
+  line-height: 1.7;
+}
+
+/* FOUNDER CARDS */
+.founders-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 4rem;
+}
+
+.founder-card {
+  position: relative;
+  background: rgba(10,20,24,0.8);
+  border: 1px solid rgba(61,184,206,0.1);
+  overflow: hidden;
+  cursor: default;
+  transition: border-color 0.4s;
+}
+.founder-card:hover {
+  border-color: rgba(61,184,206,0.35);
+}
+.founder-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(61,184,206,0.04) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.founder-card:hover::before { opacity: 1; }
+
+.founder-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 3rem 3rem 2rem;
+  border-bottom: 1px solid rgba(61,184,206,0.07);
+}
+
+.founder-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal-900) 0%, rgba(61,184,206,0.15) 100%);
+  border: 1px solid rgba(61,184,206,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+}
+.founder-avatar-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--teal-400);
+  letter-spacing: -0.02em;
+}
+/* Photo placeholder ring animation */
+.founder-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, var(--teal-400), var(--yellow-500)) border-box;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.founder-card:hover .founder-avatar::after { opacity: 0.6; }
+
+.founder-meta {
+  text-align: right;
+}
+.founder-role {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--yellow-500);
+  margin-bottom: 0.5rem;
+}
+.founder-name {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--neutral-100);
+  line-height: 1;
+}
+
+.founder-body {
+  padding: 2.5rem 3rem;
+}
+.founder-bio {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+.founder-bio strong {
+  color: var(--teal-400);
+  font-weight: 400;
+}
+
+.founder-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.founder-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  border: 1px solid rgba(61,184,206,0.2);
+  padding: 4px 10px;
+  background: rgba(61,184,206,0.04);
+}
+
+/* Photo note */
+.photo-placeholder-note {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: rgba(61,184,206,0.3);
+  text-align: center;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* ── ORIGIN STORY SECTION ─────────────────────────────────────────────────── */
+.origin-section {
+  position: relative;
+  z-index: 2;
+  padding: 10rem 4rem;
+  background: rgba(0,14,18,0.6);
+  border-top: 1px solid rgba(61,184,206,0.08);
+}
+
+.origin-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: start;
+}
+
+.origin-left {}
+
+.origin-timeline {
+  margin-top: 4rem;
+  position: relative;
+}
+.origin-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--teal-700), transparent);
+}
+
+.timeline-item {
+  padding: 0 0 3.5rem 2.5rem;
+  position: relative;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--teal-500);
+  border: 1px solid var(--teal-400);
+  box-shadow: 0 0 10px rgba(61,184,206,0.4);
+}
+
+.timeline-year {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--yellow-500);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.timeline-heading {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--neutral-100);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+.timeline-body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.75;
+}
+
+.origin-right {
+  padding-top: 1rem;
+}
+
+.origin-quote-block {
+  position: sticky;
+  top: 160px;
+}
+
+.origin-pull {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 2.5vw, 38px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--neutral-100);
+  line-height: 1.35;
+  margin-bottom: 3rem;
+}
+.origin-pull em { color: var(--teal-400); font-style: normal; }
+
+.origin-values {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.value-item {
+  padding: 1.75rem 0;
+  border-bottom: 1px solid rgba(61,184,206,0.08);
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 1.25rem;
+  align-items: start;
+  cursor: default;
+  transition: background 0.2s;
+}
+.value-item:first-child { border-top: 1px solid rgba(61,184,206,0.08); }
+
+.value-icon {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--teal-400);
+  padding-top: 2px;
+}
+
+.value-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  margin-bottom: 0.35rem;
+}
+.value-desc {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  line-height: 1.65;
+}
+
+/* ── CTA SECTION ──────────────────────────────────────────────────────────── */
+.about-cta {
+  position: relative;
+  z-index: 2;
+  padding: 10rem 4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.cta-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.cta-eyebrow::before, .cta-eyebrow::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--teal-700);
+}
+
+.cta-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 5vw, 80px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--neutral-100);
+  line-height: 1.1;
+  max-width: 800px;
+}
+.cta-heading em { color: var(--teal-400); font-style: normal; }
+
+.cta-body {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--neutral-400);
+  max-width: 500px;
+  line-height: 1.65;
+}
+
+.cta-btns {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--yellow-500);
+  color: var(--neutral-900);
+  padding: 14px 32px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--yellow-600); }
+
+.btn-ghost {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral-300);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-ghost:hover { color: var(--neutral-100); border-color: rgba(255,255,255,0.6); }
+
+/* ── FOOTER ───────────────────────────────────────────────────────────────── */
+footer {
+  position: relative;
+  z-index: 1;
+  background: #000E12;
+  border-top: 1px solid rgba(61,184,206,0.15);
+  padding: 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4rem;
+}
+.footer-brand {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  margin-bottom: 1rem;
+}
+.footer-tagline {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--neutral-300);
+  line-height: 1.5;
+}
+.footer-col-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neutral-300);
+  margin-bottom: 1.5rem;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.footer-links a {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--neutral-300);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--neutral-100); }
+.footer-bottom {
+  position: relative;
+  z-index: 1;
+  background: #000E12;
+  border-top: 1px solid rgba(61,184,206,0.1);
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--neutral-300);
+}
+.footer-contact {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neutral-300);
+  letter-spacing: 0.08em;
+}
+
+/* ── ANIMATIONS ───────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* scroll-reveal utility */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.35s; }
+
+/* TERMINAL CURSOR blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--teal-400);
+  vertical-align: middle;
+  margin-left: 4px;
+  animation: blink 1.1s step-end infinite;
+}
+
+/* Photo placeholder styling */
+.photo-ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(0,37,48,0.8) 0%, rgba(0,14,18,0.9) 100%);
+}
+.photo-ph-initials {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--teal-400);
+  letter-spacing: 0.05em;
+}
+.photo-ph-label {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(61,184,206,0.35);
+}
+</style>
+</head>
+<body>
+
+<canvas class="star-canvas" id="stars"></canvas>
+
+<nav>
+  <div class="nav-logo">Argo <span>Analytics</span></div>
+  <ul class="nav-links">
+    <li><a href="argo-about.html" class="active">About</a></li>
+    <li><a href="argo-consulting.html">Consulting</a></li>
+    <li><a href="argo-schedule.html" class="nav-cta">Schedule a Call</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-grid"></div>
+
+    <div class="hero-eyebrow">About Argo Analytics</div>
+
+    <h1 class="hero-headline">
+      Not ticket<br>
+      takers.<br>
+      <em>True</em> <span class="yellow">partners.</span>
+    </h1>
+
+    <p class="hero-sub">
+      We craft data into business value through engineering, analytics,
+      and a relentless commitment to your success.
+    </p>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span class="hero-scroll-label">Scroll</span>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <div class="manifesto-label reveal">
+      <span>Manifesto</span>
+    </div>
+    <div class="manifesto-content">
+      <p class="manifesto-pull reveal reveal-delay-1">
+        We believe quality data engineering is the <em>backbone</em>
+        of every data-driven organization.
+      </p>
+      <div class="manifesto-paras">
+        <p class="manifesto-p reveal reveal-delay-1">
+          At Argo, we don't arrive with a pre-packaged solution and
+          a smile. We arrive with <strong>questions</strong>. We dig into your
+          goals, your operations, your challenges — and only then do
+          we start building. Craftsmanship demands it.
+        </p>
+        <p class="manifesto-p reveal reveal-delay-2">
+          Our team of data scientists, engineers, and analysts are
+          dedicated to designing solutions <strong>tailored to you</strong>,
+          not borrowed from the last client. We leverage the latest
+          technologies and industry best practices so your stack is
+          effective, scalable, and reliable — now and five years out.
+        </p>
+        <p class="manifesto-p reveal reveal-delay-2">
+          We understand the importance of <strong>data security and
+          privacy</strong>. Every precaution. No shortcuts. Our agile
+          process means we adapt quickly as your business evolves —
+          because data needs and business needs are always moving.
+        </p>
+        <p class="manifesto-p reveal reveal-delay-3">
+          Partner with Argo and experience what it means to work
+          with people who care about your data as much as you do —
+          people who help you <strong>make better decisions, faster</strong>,
+          by unlocking the full potential of what you already have.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAND -->
+  <div class="stats-band">
+    <div class="stat-item reveal">
+      <div class="stat-num">20<span>+</span></div>
+      <div class="stat-label">Combined Years</div>
+      <div class="stat-sub">in data & analytics</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-num">2020</div>
+      <div class="stat-label">Founded</div>
+      <div class="stat-sub">born from a shared vision</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-num">100<span>%</span></div>
+      <div class="stat-label">Custom solutions</div>
+      <div class="stat-sub">no one-size-fits-all</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-num"><span>∞</span></div>
+      <div class="stat-label">Client Partnership</div>
+      <div class="stat-sub">longtime partners, not tickets</div>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <section class="team-section">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Meet the crew</span>
+      <div class="section-line"></div>
+    </div>
+
+    <h2 class="section-heading reveal">The people behind the pipeline.</h2>
+    <p class="section-sub reveal reveal-delay-1" style="margin-bottom: 4rem;">
+      Our priority with every client is simple: we help you succeed.
+      That starts with knowing who you're working with.
+    </p>
+
+    <div class="founders-grid">
+
+      <!-- ANDREW -->
+      <div class="founder-card reveal">
+        <div class="founder-top">
+          <div class="founder-avatar">
+            <div class="photo-ph">
+              <div class="photo-ph-initials">AC</div>
+              <div class="photo-ph-label">Photo here</div>
+            </div>
+          </div>
+          <div class="founder-meta">
+            <div class="founder-role">Co-Founder</div>
+            <div class="founder-name">Andrew Chaffin</div>
+          </div>
+        </div>
+        <div class="founder-body">
+          <p class="founder-bio">
+            Andrew creates work. Often, that's through sales and solution
+            architecture — a craft he's been honing for over a decade at
+            <strong>Domo, MongoDB, Alation</strong>, and now Argo.
+            He loves the ideas, the what-ifs. He spends his days tuning
+            concepts with customers and handing polished plans off to the
+            best make-it-happeners in the business.
+          </p>
+          <div class="founder-tags">
+            <span class="founder-tag">Solution Architecture</span>
+            <span class="founder-tag">Sales Engineering</span>
+            <span class="founder-tag">Strategy</span>
+            <span class="founder-tag">Domo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOHN -->
+      <div class="founder-card reveal reveal-delay-1">
+        <div class="founder-top">
+          <div class="founder-avatar">
+            <div class="photo-ph">
+              <div class="photo-ph-initials">JS</div>
+              <div class="photo-ph-label">Photo here</div>
+            </div>
+          </div>
+          <div class="founder-meta">
+            <div class="founder-role">Co-Founder</div>
+            <div class="founder-name">John Stevens</div>
+          </div>
+        </div>
+        <div class="founder-body">
+          <p class="founder-bio">
+            John was a <strong>MajorDomo at Domo for 4 years</strong>
+            while completing his PhD, then joined Domo's Data Science
+            consulting team building predictive models for their largest
+            clients. Outside of work, John spends time with his wife and
+            six kids. That is all. There is no time for anything else.
+          </p>
+          <div class="founder-tags">
+            <span class="founder-tag">Data Science</span>
+            <span class="founder-tag">Predictive Modeling</span>
+            <span class="founder-tag">PhD</span>
+            <span class="founder-tag">Domo</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="photo-placeholder-note">[ drop in headshots when ready — drop-zone coming ]</p>
+  </section>
+
+  <!-- ORIGIN / HISTORY -->
+  <section class="origin-section">
+    <div class="origin-inner">
+
+      <div class="origin-left">
+        <div class="section-header reveal" style="margin-bottom: 3rem;">
+          <span class="section-eyebrow">Our history</span>
+          <div class="section-line"></div>
+        </div>
+        <h2 class="section-heading reveal" style="margin-bottom: 1rem;">
+          Born from a shared vision.
+        </h2>
+        <p class="section-sub reveal reveal-delay-1" style="margin-bottom: 0;">
+          Argo was founded on the belief that companies deserve analytics
+          partners who are as invested in outcomes as they are.
+        </p>
+
+        <div class="origin-timeline">
+          <div class="timeline-item">
+            <div class="timeline-year">The Beginning</div>
+            <div class="timeline-heading">Two engineers meet at Domo</div>
+            <div class="timeline-body">
+              Andrew Chaffin and John Stevens first crossed paths at Domo,
+              a leading business intelligence platform. With combined
+              experience across the full data stack, they recognized an
+              enormous gap: companies were leaving analytics value on the
+              table, every single day.
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2020</div>
+            <div class="timeline-heading">Argo Analytics is founded</div>
+            <div class="timeline-body">
+              Fueled by a desire to help organizations unlock the full
+              potential of their data, Andrew and John launched Argo —
+              a cutting-edge analytics consulting firm focused on helping
+              clients optimize their Domo experience and drive
+              data-driven decision-making.
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">Growth</div>
+            <div class="timeline-heading">Partners become the engine</div>
+            <div class="timeline-body">
+              Rapid growth driven almost entirely by dedicated, satisfied
+              customers. Our clients aren't just clients — they're
+              longtime partners. This success enabled us to attract and
+              hire the very best talent from our network, united by a
+              shared commitment to delivering exceptional results.
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">Today</div>
+            <div class="timeline-heading">At the forefront of analytics consulting</div>
+            <div class="timeline-body">
+              A proven track record of enabling businesses to harness
+              the power of data and achieve outstanding results. Our
+              relentless pursuit of excellence has cemented our
+              reputation as a trusted partner in data-driven success.
+              And we're just getting started.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="origin-right">
+        <div class="origin-quote-block reveal">
+          <p class="origin-pull">
+            "Our clients are <em>longtime partners.</em> Not tickets in a queue."
+          </p>
+
+          <div class="origin-values">
+            <div class="value-item">
+              <div class="value-icon">◈</div>
+              <div>
+                <div class="value-label">Craftsmanship</div>
+                <div class="value-desc">
+                  Every dashboard, every pipeline, every data model
+                  is built with care. We don't ship mediocre — we
+                  ship things we're proud to put our name on.
+                </div>
+              </div>
+            </div>
+            <div class="value-item">
+              <div class="value-icon">◈</div>
+              <div>
+                <div class="value-label">Personalization</div>
+                <div class="value-desc">
+                  We reject one-size-fits-all. Your business is
+                  unique. Your analytics strategy should be too.
+                  We dig deep before we build anything.
+                </div>
+              </div>
+            </div>
+            <div class="value-item">
+              <div class="value-icon">◈</div>
+              <div>
+                <div class="value-label">Partnership</div>
+                <div class="value-desc">
+                  We succeed when you succeed. That means staying
+                  invested long after delivery — because the real
+                  work starts when the data starts flowing.
+                </div>
+              </div>
+            </div>
+            <div class="value-item">
+              <div class="value-icon">◈</div>
+              <div>
+                <div class="value-label">Agility</div>
+                <div class="value-desc">
+                  Business needs evolve. Our process is built to
+                  adapt quickly — so your data strategy is always
+                  current, always relevant, never stale.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta">
+    <div class="cta-eyebrow">Let's build something</div>
+    <h2 class="cta-heading reveal">
+      Ready to unlock the full potential of <em>your</em> data?
+    </h2>
+    <p class="cta-body reveal reveal-delay-1">
+      Partner with Argo Analytics and experience the craftsmanship
+      of a team that's genuinely invested in your success.
+    </p>
+    <div class="cta-btns reveal reveal-delay-2">
+      <a href="argo-schedule.html" class="btn-primary">Schedule a Call →</a>
+      <a href="argo-consulting.html" class="btn-ghost">View our services</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Argo Analytics</div>
+    <p class="footer-tagline">Navigating complexity.<br>Delivering clarity.</p>
+  </div>
+  <div>
+    <div class="footer-col-label">Services</div>
+    <ul class="footer-links">
+      <li><a href="argo-consulting.html">Data Engineering</a></li>
+      <li><a href="argo-consulting.html">Analytics Consulting</a></li>
+      <li><a href="argo-consulting.html">Domo Optimization</a></li>
+      <li><a href="argo-consulting.html">Data Strategy</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-label">Company</div>
+    <ul class="footer-links">
+      <li><a href="argo-about.html" class="active">About</a></li>
+      <li><a href="argo-about.html">Team</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2025 Argo Analytics. All rights reserved.</span>
+  <span class="footer-contact">interest@argoanalytics.ai · (208) 313-5165</span>
+</div>
+
+<script>
+// ── STARS + CURSOR CONSTELLATION (identical to homepage) ──────────────────────
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let W, H, stars = [], cursorStars = [];
+let mouse = { x: -9999, y: -9999 };
+let lastMouse = { x: -9999, y: -9999 };
+
+const MAX_CURSOR_STARS = 60;
+const CONNECT_DIST_BG  = 100;
+const CONNECT_DIST_CUR = 160;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 180; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.2 + 0.2,
+      alpha: Math.random() * 0.6 + 0.1,
+      speed: Math.random() * 0.3 + 0.05,
+      isTeal: Math.random() > 0.85
+    });
+  }
+}
+
+function spawnCursorStar(x, y) {
+  const angle = Math.random() * Math.PI * 2;
+  const speed = Math.random() * 0.8 + 0.2;
+  cursorStars.push({
+    x, y,
+    vx: Math.cos(angle) * speed * 0.6,
+    vy: Math.sin(angle) * speed * 0.6 - 0.3,
+    r: Math.random() * 1.4 + 0.4,
+    life: 1.0,
+    decay: Math.random() * 0.008 + 0.004,
+    isTeal: Math.random() > 0.5
+  });
+  if (cursorStars.length > MAX_CURSOR_STARS) cursorStars.shift();
+}
+
+window.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+  const dx = mouse.x - lastMouse.x;
+  const dy = mouse.y - lastMouse.y;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  if (dist > 8) {
+    const count = Math.min(Math.floor(dist / 8), 4);
+    for (let i = 0; i < count; i++) {
+      const t = i / count;
+      spawnCursorStar(
+        lastMouse.x + dx * t + (Math.random() - 0.5) * 4,
+        lastMouse.y + dy * t + (Math.random() - 0.5) * 4
+      );
+    }
+    lastMouse.x = mouse.x;
+    lastMouse.y = mouse.y;
+  }
+});
+
+function drawLine(x1, y1, x2, y2, maxDist, baseAlpha, color) {
+  const dx = x1 - x2, dy = y1 - y2;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  if (dist >= maxDist) return;
+  const alpha = baseAlpha * (1 - dist / maxDist);
+  ctx.strokeStyle = color.replace('ALPHA', alpha.toFixed(3));
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, W, H);
+
+  for (const s of stars) {
+    s.y -= s.speed;
+    if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = s.isTeal
+      ? `rgba(61,184,206,${s.alpha})`
+      : `rgba(245,245,245,${s.alpha})`;
+    ctx.fill();
+  }
+
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i < stars.length; i++) {
+    for (let j = i + 1; j < stars.length; j++) {
+      drawLine(stars[i].x, stars[i].y, stars[j].x, stars[j].y,
+        CONNECT_DIST_BG, 0.06, 'rgba(61,184,206,ALPHA)');
+    }
+  }
+
+  for (let i = cursorStars.length - 1; i >= 0; i--) {
+    const cs = cursorStars[i];
+    cs.x += cs.vx; cs.y += cs.vy;
+    cs.life -= cs.decay;
+    if (cs.life <= 0) { cursorStars.splice(i, 1); continue; }
+    const a = cs.life * (cs.isTeal ? 0.9 : 0.7);
+    ctx.beginPath();
+    ctx.arc(cs.x, cs.y, cs.r * cs.life, 0, Math.PI * 2);
+    ctx.fillStyle = cs.isTeal ? `rgba(61,184,206,${a})` : `rgba(245,245,245,${a})`;
+    ctx.fill();
+  }
+
+  ctx.lineWidth = 0.6;
+  for (let i = 0; i < cursorStars.length; i++) {
+    const cs = cursorStars[i];
+    for (let j = i + 1; j < cursorStars.length; j++) {
+      const cs2 = cursorStars[j];
+      const la = Math.min(cs.life, cs2.life);
+      drawLine(cs.x, cs.y, cs2.x, cs2.y, CONNECT_DIST_CUR * 0.7, 0.35 * la, 'rgba(61,184,206,ALPHA)');
+    }
+    for (const s of stars) {
+      drawLine(cs.x, cs.y, s.x, s.y, CONNECT_DIST_CUR, 0.25 * cs.life, 'rgba(61,184,206,ALPHA)');
+    }
+  }
+
+  if (mouse.x > 0) {
+    const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 80);
+    grad.addColorStop(0, 'rgba(61,184,206,0.04)');
+    grad.addColorStop(1, 'rgba(61,184,206,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(mouse.x, mouse.y, 80, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  requestAnimationFrame(drawStars);
+}
+
+resize();
+initStars();
+drawStars();
+window.addEventListener('resize', () => { resize(); initStars(); });
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
+const revealEls = document.querySelectorAll('.reveal');
+const timelineItems = document.querySelectorAll('.timeline-item');
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+revealEls.forEach(el => io.observe(el));
+
+// Timeline items staggered
+const tio = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      // stagger siblings
+      const idx = [...timelineItems].indexOf(e.target);
+      setTimeout(() => {
+        e.target.classList.add('visible');
+      }, idx * 150);
+    }
+  });
+}, { threshold: 0.1 });
+
+timelineItems.forEach(el => tio.observe(el));
+
+// ── STAT COUNTER ANIMATION ───────────────────────────────────────────────────
+function countUp(el, target, suffix, duration) {
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = Math.round(ease * target);
+    el.textContent = val + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// Observe stat band
+const statBand = document.querySelector('.stats-band');
+let statsDone = false;
+const statObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting && !statsDone) {
+    statsDone = true;
+    // We only animate the text nums that are numbers
+    const statNums = document.querySelectorAll('.stat-num');
+    // 20+, 2020, 100%, ∞ — animate the first three
+    setTimeout(() => {
+      // stat 1: "20+"
+      const s1 = statNums[0];
+      let v = 0;
+      const t1 = setInterval(() => {
+        v++;
+        s1.innerHTML = v + '<span>+</span>';
+        if (v >= 20) clearInterval(t1);
+      }, 60);
+    }, 100);
+
+    setTimeout(() => {
+      // stat 2: "2020"
+      const s2 = statNums[1];
+      countUp({ textContent: '' }, 2020, '', 1600);
+      const start2 = performance.now();
+      function step2(now) {
+        const p = Math.min((now - start2) / 1600, 1);
+        const ease = 1 - Math.pow(1-p, 3);
+        s2.textContent = Math.round(1900 + ease * 120);
+        if (p < 1) requestAnimationFrame(step2);
+      }
+      requestAnimationFrame(step2);
+    }, 200);
+
+    setTimeout(() => {
+      // stat 3: "100%"
+      const s3 = statNums[2];
+      const start3 = performance.now();
+      function step3(now) {
+        const p = Math.min((now - start3) / 1400, 1);
+        const ease = 1 - Math.pow(1-p, 3);
+        s3.innerHTML = Math.round(ease * 100) + '<span>%</span>';
+        if (p < 1) requestAnimationFrame(step3);
+      }
+      requestAnimationFrame(step3);
+    }, 350);
+  }
+}, { threshold: 0.3 });
+
+if (statBand) statObserver.observe(statBand);
+</script>
+</body>
+</html>
